@@ -1,5 +1,6 @@
 import logging
 
+
 def if_none_raise_with_id(_id, trans):
     if trans is None:
         raise ValueError(str(_id) + " does not exist ")
@@ -15,7 +16,6 @@ def if_empty_string_raise(value):
         raise ValueError( " does not exist ")
     if value == '':
         raise ValueError(" does not exist ")
-
 
 
 def log_error(exception, pk_id, web_method_name, cfg):

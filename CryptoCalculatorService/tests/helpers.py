@@ -7,17 +7,17 @@ import mock
 
 
 def get_exchange_rates_record():
-    with open('../../sample_records/exchange_rate.json', 'r') as my_file:
+    with open('../../CryptoCalculatorService/CryptoCalculatorService/sample_records/exchange_rate.json', 'r') as my_file:
         return json.load(my_file)
 
 
 def get_prices_record():
-    with open('../../sample_records/price.json', 'r') as my_file:
+    with open('../../CryptoCalculatorService/CryptoCalculatorService/sample_records/price.json', 'r') as my_file:
         return json.load(my_file)
 
 
 def get_prices_2020706_record():
-    with open('../../sample_records/prices_2020706.json', 'r') as my_file:
+    with open('../../CryptoCalculatorService/CryptoCalculatorService/sample_records/prices_2020706.json', 'r') as my_file:
         return json.load(my_file)
 
 
@@ -35,7 +35,6 @@ def delete_prices():
     db = client[config.DATABASE]
     prices_col = db["prices"]
     prices_col.delete_many({})
-
 
 
 def insert_prices_2020706_record():
