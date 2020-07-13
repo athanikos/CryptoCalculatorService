@@ -1,6 +1,7 @@
 from datetime import date, datetime
 from tests.helpers import insert_prices_record, \
     insert_prices_2020706_record, delete_prices
+from CryptoCalculatorService.model.cryptostore import user_transaction
 from CryptoCalculatorService.calculator.BalanceCalculator import BalanceCalculator
 from CryptoCalculatorService.data_access.Repository import Repository
 from CryptoCalculatorService.config import  configure_app
@@ -41,7 +42,6 @@ def test_bc_create_2_items():
     do_connect(config)
     insert_exchange_record()
     insert_prices_record()
-
     user_transaction.objects.all().delete()
     repo.insert_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken")
     repo.insert_transaction(1, volume=2, symbol="BTC", value=2, price=1, currency="EUR", date="2020-01-01",
