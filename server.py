@@ -1,8 +1,8 @@
 import pymongo
 from flask import Flask, jsonify, request
 from flask.blueprints import Blueprint
-from CryptoUsersService.config import configure_app
-from CryptoUsersService.UsersService import UsersService
+from CryptoCalculatorService.config import configure_app
+from CryptoCalculatorService import CalculatorService
 
 bp = Blueprint(__name__.split('.')[0], __name__.split('.')[0])
 
@@ -17,21 +17,21 @@ def create_app():
 @bp.route("/api/v1/prices",
           methods=['GET'])
 def get_prices():
-    ps = UsersService(configure_app())
+    ps = CalculatorService(configure_app())
     return ps.get_prices(items_count=10)
 
 
 @bp.route("/api/v1/transactions/<int:user_id>",
           methods=['GET'])
 def get_transactions(user_id):
-    ts = UsersService(configure_app())
+    ts = CalculatorService(configure_app())
     return ts.get_transactions(request.json['user_id'])
 
 
 @bp.route("/api/v1/transaction",
           methods=['POST'])
 def insert_transaction():
-    ts = UsersService(configure_app())
+    ts = CalculatorService(configure_app())
     un = ts.insert_transaction(request.json['user_id'], request.json['volume'], request.json['symbol'],
                                 request.json['value'], request.json['price'], request.json['date'],
                                 request.json['source'])
@@ -41,7 +41,7 @@ def insert_transaction():
 @bp.route("/api/v1/transaction",
           methods=['PUT'])
 def update_transaction():
-    ts = UsersService(configure_app())
+    ts = CalculatorService(configure_app())
     un = ts.update_transaction( request.json['id'],
                                 request.json['user_id'], request.json['volume'], request.json['symbol'],
                                 request.json['value'], request.json['price'], request.json['date'],
@@ -52,28 +52,28 @@ def update_transaction():
 @bp.route("/api/v1/balance/<int:user_id>",
           methods=['GET'])
 def get_balance(user_id):
-    bs = UsersService(configure_app())
+    bs = CalculatorService(configure_app())
     return bs.compute(user_id)
 
 
 @bp.route("/api/v1/user-channels/<int:user_id>/<string:channel_type>",
           methods=['GET'])
 def get_user_channels(user_id, channel_type):
-    uns = UsersService(configure_app())
+    uns = CalculatorService(configure_app())
     return uns.get_user_channels(user_id, channel_type)
 
 
 @bp.route("/api/v1/user-notifications",
           methods=['GET'])
 def get_user_notifications():
-    uns = UsersService(configure_app())
+    uns = CalculatorService(configure_app())
     return uns.get_user_notifications(10)
 
 
 @bp.route("/api/v1/user-notifications",
           methods=['POST'])
 def insert_notification():
-    uns = UsersService(configure_app())
+    uns = CalculatorService(configure_app())
     un = uns.insert_user_notification(request.json['user_id'],
                                       request.json['user_name'],
                                       request.json['user_email'],
@@ -91,10 +91,11 @@ def insert_notification():
 @bp.route("/api/v1/user-channel",
           methods=['POST'])
 def insert_user_channel():
-    uns = UsersService(configure_app())
+    uns = CalculatorService(configure_app())
     un = uns.insert_user_channel(request.json['user_id'], request.json['channel_type'], request.json['chat_id'])
 
     return jsonify(un.to_json())
+
 
 @bp.app_errorhandler(pymongo.errors.ServerSelectionTimeoutError)
 def handle_error(error):

@@ -54,6 +54,8 @@ def insert_exchange_record():
     exchange_rates_col.insert(get_exchange_rates_record())
 
 
+
+
 @pytest.fixture(scope='module')
 def mock_log():
     with mock.patch("Logger.logger.log_error"

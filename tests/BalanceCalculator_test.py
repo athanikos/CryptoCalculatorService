@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from kafkaHelper.kafkaHelper import *
 from tests.helpers import insert_prices_record, \
     insert_prices_2020706_record, delete_prices
 from CryptoCalculatorService.model.cryptostore import user_transaction
@@ -15,6 +16,7 @@ def test_bc_create_1_item():
     repo = Repository(config, mock_log)
     do_connect(config)
     user_transaction.objects.all().delete()
+    delete_prices()
     insert_exchange_record()
     insert_prices_record()
     repo.insert_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken")
@@ -113,6 +115,28 @@ def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
     assert (bc.symbol_rates['ADA'].price == 0.08672453072885744)
 
 
+def test_kakfa_conume_and_convert_to_transaction():
+    t = user_transaction()
+    t.user_id = 1
+    t.preferred_currency = "EUR"
+    t.volume = 100
+    t.symbol = "BTC"
+    t.value = 12131
+    t.price = 1213
+    t.date = 12121
+    t.source = "kraken"
+    t.currency = "EUR"
+    with_action(t, action=Action.Added)
+    print(jsonpickle.encode(t))
+    produce_with_action(broker_names=["localhost:9092"], topic="t", data_item=jsonpickle.encode(t), id=t.user_id)
+    items = consume(broker_names=["localhost:9092"], consumer_group=None, topic="t")
+    assert (len(items) == 1)
+
+    trans =  jsonpickle.decode(user_transaction,items[0])
+
+    print(trans)
+
+    assert ( t.volume == 100)
 
 
 

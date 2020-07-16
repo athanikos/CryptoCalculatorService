@@ -13,3 +13,4 @@ setuptools~=40.8.0
 pymongo~=3.10.1
 Werkzeug~=1.0.1
 jsonpickle
+KafkaHelper-athanikos==0.0.5
