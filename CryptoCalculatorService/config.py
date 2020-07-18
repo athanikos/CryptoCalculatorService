@@ -5,7 +5,7 @@ from werkzeug.utils import import_string
 DB = "crypto"
 PORT = 27017
 MONGO_IP = "134.122.79.43"
-
+KAFKA_BROKERS = "localhost:9092"
 
 class BaseConfig(object):
     DEBUG = False
@@ -16,6 +16,8 @@ class BaseConfig(object):
     USERNAME = ""
     PASSWORD = ""
     LOGS_PATH = '../CryptoCalculatorService/logs/CryptoModel.log'
+    KAFKA_BROKERS = KAFKA_BROKERS
+
 
 
 class DevelopmentConfig(BaseConfig):
@@ -27,6 +29,8 @@ class DevelopmentConfig(BaseConfig):
     USERNAME = "test"
     PASSWORD = "test"
     LOGS_PATH ='../CryptoCalculatorService/logs/CryptoModel.log'
+    KAFKA_BROKERS = KAFKA_BROKERS
+
 
 
 class ProductionConfig(BaseConfig):
@@ -38,6 +42,8 @@ class ProductionConfig(BaseConfig):
     USERNAME = ""
     PASSWORD = ""
     LOGS_PATH = '../CryptoCalculatorService/logs/CryptoUsersService.log'
+    KAFKA_BROKERS = KAFKA_BROKERS
+
 
 
 config = {
@@ -51,7 +57,5 @@ def configure_app():
     config_name = os.getenv('FLASK_ENV', 'default')
     cfg = import_string(config_name)()
     cfg.USERNAME = get_password('CryptoCalculatorService',  'USERNAME')
-    print(cfg.USERNAME)
     cfg.PASSWORD = get_password('CryptoCalculatorService',    cfg.USERNAME)
-    print(cfg.PASSWORD)
     return cfg

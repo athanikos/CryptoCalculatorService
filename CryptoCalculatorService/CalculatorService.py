@@ -2,12 +2,14 @@ from datetime import datetime
 from flask import jsonify
 from CryptoCalculatorService.calculator.BalanceCalculator import BalanceCalculator
 from CryptoCalculatorService.data_access.Repository import Repository
+
 DATE_FORMAT = "%Y-%m-%d"
 import jsonpickle
 from CryptoCalculatorService.helpers import log_error
+from kafkaHelper.kafkaHelper import consume
 
 
-class  CalculatorService:
+class CalculatorService:
 
     def __init__(self, config):
         self.repo = Repository(config, log_error)
@@ -57,3 +59,6 @@ class  CalculatorService:
     def insert_user_channel(self, user_id, channel_type, chat_id):
         repo = Repository(self.configuration)
         return repo.insert_user_channel(user_id, channel_type, chat_id)
+
+    def read_from_kafka_and_write_to_mongo(self):
+        items = consume(topic="transactions", broker_names=self.configuration.KAFKA_BROKERS, consumer_group="CalculatorService")

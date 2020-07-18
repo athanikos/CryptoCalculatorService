@@ -127,16 +127,10 @@ def test_kakfa_conume_and_convert_to_transaction():
     t.source = "kraken"
     t.currency = "EUR"
     with_action(t, action=Action.Added)
-    print(jsonpickle.encode(t))
     produce_with_action(broker_names=["localhost:9092"], topic="t", data_item=jsonpickle.encode(t), id=t.user_id)
     items = consume(broker_names=["localhost:9092"], consumer_group=None, topic="t")
     assert (len(items) == 1)
-
-    trans =  jsonpickle.decode(user_transaction,items[0])
-
-    print(trans)
-
-    assert ( t.volume == 100)
+    assert ( jsonpickle.decode(items[0].value).volume == 100)
 
 
 

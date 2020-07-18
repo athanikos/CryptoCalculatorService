@@ -6,9 +6,8 @@ from CryptoModel.data_access.Repository import Repository
 from CryptoModel.config import  configure_app
 from CryptoModel.test.helpers import mock_log, insert_exchange_record
 from CryptoModel.data_access.helpers import do_connect
-DATE_FORMAT = '%Y-%m-%d'
 from CryptoModel.model.cryptostore import  user_transaction
-
+DATE_FORMAT = '%Y-%m-%d'
 
 def test_bc_create_1_item():
     config = configure_app()
@@ -94,24 +93,17 @@ def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
     do_connect(config)
     user_transaction.objects.all().delete()
     delete_prices()
-
     insert_prices_record()#0.08410447380210428
     insert_prices_2020706_record()#0.08672453072885744
-
     symbols = repo.fetch_symbol_rates()
-
     repo.insert_transaction(1, volume=19796, symbol="ADA", value=69, price=1, currency="EUR", date="2020-07-13",
                             source="kraken")
     transactions = repo.fetch_transactions(1)
-    assert (len(transactions) == 1)
     symbols = repo.fetch_symbol_rates()
-
-
     ers = repo.fetch_latest_exchange_rates_to_date('2051-07-15')
     bc = BalanceCalculator(transactions, symbols.rates, ers, "EUR")
-    # should return 2020706 = 0.08672453072885744
-
     assert (bc.symbol_rates['ADA'].price == 0.08672453072885744)
+    assert (len(transactions) == 1)
 
 
 
