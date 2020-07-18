@@ -6,7 +6,6 @@ import jsonpickle
 from CryptoCalculatorService.helpers import log_error
 from kafkaHelper.kafkaHelper import consume
 from CryptoCalculatorService.scheduler.server import start
-
 DATE_FORMAT = "%Y-%m-%d"
 
 
