@@ -1,5 +1,4 @@
-from CryptoCalculatorService.model.cryptostore_symbol_value import total_symbol_value
-
+from CryptoModel.cryptostore_symbol_value import total_symbol_value
 
 class BalanceCalculator:
 

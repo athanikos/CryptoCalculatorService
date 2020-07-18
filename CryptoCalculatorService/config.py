@@ -2,10 +2,12 @@ import os
 from keyring import get_password
 from werkzeug.utils import import_string
 
-DB = "crypto"
+DB = "calculator_service"
 PORT = 27017
 MONGO_IP = "134.122.79.43"
-KAFKA_BROKERS = "localhost:9092"
+KAFKA_BROKERS = "192.168.1.57:9092"
+TRANSACTIONS_TOPIC_NAME = "transactions_2"
+
 
 class BaseConfig(object):
     DEBUG = False
@@ -17,20 +19,20 @@ class BaseConfig(object):
     PASSWORD = ""
     LOGS_PATH = '../CryptoCalculatorService/logs/CryptoModel.log'
     KAFKA_BROKERS = KAFKA_BROKERS
-
+    TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
 
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
-    SERVERNAME  = "localhost"
+    SERVERNAME = "localhost"
     PORT = PORT
-    DATABASE = "test_crypto"
+    DATABASE = DB
     USERNAME = "test"
     PASSWORD = "test"
-    LOGS_PATH ='../CryptoCalculatorService/logs/CryptoModel.log'
+    LOGS_PATH = '../CryptoCalculatorService/logs/CryptoModel.log'
     KAFKA_BROKERS = KAFKA_BROKERS
-
+    TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
 
 
 class ProductionConfig(BaseConfig):
@@ -43,7 +45,7 @@ class ProductionConfig(BaseConfig):
     PASSWORD = ""
     LOGS_PATH = '../CryptoCalculatorService/logs/CryptoUsersService.log'
     KAFKA_BROKERS = KAFKA_BROKERS
-
+    TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
 
 
 config = {
@@ -56,6 +58,6 @@ config = {
 def configure_app():
     config_name = os.getenv('FLASK_ENV', 'default')
     cfg = import_string(config_name)()
-    cfg.USERNAME = get_password('CryptoCalculatorService',  'USERNAME')
-    cfg.PASSWORD = get_password('CryptoCalculatorService',    cfg.USERNAME)
+    cfg.USERNAME = get_password('CryptoCalculatorService', 'USERNAME')
+    cfg.PASSWORD = get_password('CryptoCalculatorService', cfg.USERNAME)
     return cfg
