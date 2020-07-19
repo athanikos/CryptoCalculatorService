@@ -1,13 +1,13 @@
 import mock
 from bson import ObjectId
 from pymongo.errors import ServerSelectionTimeoutError
-from CryptoUsersService.model import user_channel, user_transaction, user_notification
-from CryptoUsersService.model.coinmarket import prices
-from CryptoUsersService.model.fixer import exchange_rates
-from config import configure_app
-from CryptoUsersService.data_access.Repository import Repository
+from cryptomodel.cryptostore import user_channel, user_transaction, user_notification
+from cryptomodel.coinmarket import prices
+from cryptomodel.fixer import exchange_rates
+from CryptoCalculatorService.config import configure_app
+from CryptoCalculatorService.data_access.Repository import Repository
 import pytest
-from CryptoUsersService.data_access import helpers
+from CryptoCalculatorService.data_access import helpers
 from tests.helpers import insert_prices_record, insert_exchange_record
 
 

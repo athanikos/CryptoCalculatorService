@@ -1,10 +1,10 @@
 from datetime import datetime
-from CryptoModel.readonly import SymbolRates
+from cryptomodel.readonly import SymbolRates
 from mongoengine import Q
-from CryptoModel.coinmarket import prices
-from CryptoModel.fixer import exchange_rates
-from CryptoModel import helpers
-from CryptoModel.cryptostore import  user_transaction
+from cryptomodel.coinmarket import prices
+from cryptomodel.fixer import exchange_rates
+from cryptomodel import helpers
+from cryptomodel.cryptostore import  user_transaction
 DATE_FORMAT = "%Y-%m-%d"
 
 

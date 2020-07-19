@@ -2,7 +2,7 @@ from datetime import date, datetime
 from kafkaHelper.kafkaHelper import *
 from tests.helpers import insert_prices_record, \
     insert_prices_2020706_record, delete_prices
-from CryptoCalculatorService.model.cryptostore import user_transaction
+from cryptomodel.cryptostore import user_transaction
 from CryptoCalculatorService.calculator.BalanceCalculator import BalanceCalculator
 from CryptoCalculatorService.data_access.Repository import Repository
 from CryptoCalculatorService.config import  configure_app
@@ -126,7 +126,8 @@ def test_kakfa_conume_and_convert_to_transaction():
     t.date = 12121
     t.source = "kraken"
     t.currency = "EUR"
-    with_action(t, action=Action.Added)
+    t.source_id ="dsds"
+    t.operation = "added"
     produce_with_action(broker_names=["localhost:9092"], topic="test_kakfa_conume_and_convert_to_transaction", data_item=jsonpickle.encode(t))
     items = consume(broker_names=["localhost:9092"], consumer_group="test_kakfa_conume_and_convert_to_transaction", topic="test_kakfa_conume_and_convert_to_transaction")
     assert (len(items) == 1)

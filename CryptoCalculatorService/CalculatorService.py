@@ -6,6 +6,7 @@ import jsonpickle
 from CryptoCalculatorService.helpers import log_error
 from kafkaHelper.kafkaHelper import consume
 from CryptoCalculatorService.scheduler.server import start
+from kafkaHelper.kafkaHelper import Action
 DATE_FORMAT = "%Y-%m-%d"
 
 
@@ -66,7 +67,17 @@ class CalculatorService:
                         consumer_group="CalculatorService")
         for trans in items:
             da_item = jsonpickle.decode( trans,keys=False)
-            cs.repo.insert_transaction(symbol=da_item.symbol, currency=da_item.currency,
-                                         user_id=da_item.user_id, volume=da_item.volume, value=da_item.value,
-                                         price=da_item.price,
-                                         date=da_item.date, source=da_item.source)
+            print(da_item)
+            if da_item.action == Action.added:
+                #delete before inserting ?
+                cs.repo.insert_transaction(symbol=da_item.symbol, currency=da_item.currency,
+                                             user_id=da_item.user_id, volume=da_item.volume, value=da_item.value,
+                                             price=da_item.price,
+                                             date=da_item.date, source=da_item.source)
+            elif da_item.action == Action.Modified:
+                cs.repo.update_transaction(symbol=da_item.symbol, currency=da_item.currency,
+                                             user_id=da_item.user_id, volume=da_item.volume, value=da_item.value,
+                                             price=da_item.price,
+                                             date=da_item.date, source=da_item.source)
+            elif da_item.action == Action.Deleted:
+                cs.repo.delete_transaction(id = da_item.id)#fix it not the same id

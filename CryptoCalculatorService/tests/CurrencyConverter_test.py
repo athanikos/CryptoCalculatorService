@@ -1,8 +1,8 @@
 from CryptoModel.calculator.CurrencyConverter import CurrencyConverter, ConversionOrder
-from CryptoModel.data_access.Repository import Repository
-from CryptoModel.config import  configure_app
-from CryptoModel.test.helpers import mock_log, insert_exchange_record
-from CryptoModel.data_access.helpers import do_connect
+from cryptomodel.data_access.Repository import Repository
+from cryptomodel.config import  configure_app
+from cryptomodel.test.helpers import mock_log, insert_exchange_record
+from cryptomodel.helpers import do_connect
 
 
 def test_convert():
