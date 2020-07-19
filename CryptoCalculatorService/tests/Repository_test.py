@@ -8,7 +8,7 @@ from CryptoCalculatorService.config import configure_app
 from CryptoCalculatorService.data_access.Repository import Repository
 import pytest
 from CryptoCalculatorService.data_access import helpers
-from tests.helpers import insert_prices_record, insert_exchange_record
+from CryptoCalculatorService.tests.helpers import insert_prices_record, insert_exchange_record
 
 
 @pytest.fixture(scope='module')

@@ -1,7 +1,7 @@
-from CryptoModel.calculator.CurrencyConverter import CurrencyConverter, ConversionOrder
-from cryptomodel.data_access.Repository import Repository
-from cryptomodel.config import  configure_app
-from cryptomodel.test.helpers import mock_log, insert_exchange_record
+from calculator.CurrencyConverter import CurrencyConverter, ConversionOrder
+from CryptoCalculatorService.data_access.Repository import Repository
+from CryptoCalculatorService.config import  configure_app
+from CryptoCalculatorService.tests.helpers import mock_log, insert_exchange_record
 from cryptomodel.helpers import do_connect
 
 

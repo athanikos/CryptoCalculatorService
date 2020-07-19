@@ -4,9 +4,9 @@ from mongoengine import Q
 from cryptomodel.coinmarket import prices
 from cryptomodel.fixer import exchange_rates
 from cryptomodel import helpers
-from cryptomodel.cryptostore import  user_transaction
+from cryptomodel.cryptostore import  user_transaction, user_notification, user_settings, user_channel
 DATE_FORMAT = "%Y-%m-%d"
-
+from CryptoCalculatorService.helpers import if_none_raise_with_id,if_none_raise, log_error
 
 class Repository:
 

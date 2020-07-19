@@ -1,12 +1,12 @@
 from datetime import date, datetime
-from CryptoModel.test.helpers import insert_prices_record, \
+from CryptoCalculatorService.tests.helpers import insert_prices_record, \
     insert_prices_2020706_record, delete_prices
-from CryptoModel.calculator.BalanceCalculator import BalanceCalculator
-from CryptoModel.data_access.Repository import Repository
-from CryptoModel.config import  configure_app
-from CryptoModel.test.helpers import mock_log, insert_exchange_record
-from CryptoModel.data_access.helpers import do_connect
-from CryptoModel.model.cryptostore import  user_transaction
+from calculator import BalanceCalculator
+from CryptoCalculatorService.data_access.Repository import Repository
+from CryptoCalculatorService.config import  configure_app
+from CryptoCalculatorService.tests.helpers import mock_log, insert_exchange_record
+from CryptoCalculatorService.data_access.helpers import do_connect
+from cryptomodel.cryptostore import  user_transaction
 DATE_FORMAT = '%Y-%m-%d'
 
 def test_bc_create_1_item():
