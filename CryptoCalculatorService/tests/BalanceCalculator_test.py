@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from CryptoCalculatorService.tests.helpers import insert_prices_record, \
     insert_prices_2020706_record, delete_prices
-from calculator import BalanceCalculator
+from calculator.BalanceCalculator import BalanceCalculator
 from CryptoCalculatorService.data_access.Repository import Repository
 from CryptoCalculatorService.config import  configure_app
 from CryptoCalculatorService.tests.helpers import mock_log, insert_exchange_record

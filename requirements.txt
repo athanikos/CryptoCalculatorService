@@ -15,4 +15,4 @@ Werkzeug~=1.0.1
 jsonpickle
 KafkaHelper-athanikos==0.1.0
 apscheduler
-cryptomodel-athanikos==2.1.1
+cryptomodel-athanikos==2.1.4
