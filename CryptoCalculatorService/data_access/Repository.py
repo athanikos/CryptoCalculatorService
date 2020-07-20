@@ -3,10 +3,14 @@ from cryptomodel.readonly import SymbolRates
 from mongoengine import Q
 from cryptomodel.coinmarket import prices
 from cryptomodel.fixer import exchange_rates
-from cryptomodel import helpers
-from cryptomodel.cryptostore import  user_transaction, user_notification, user_settings, user_channel
+from cryptomodel.cryptostore import user_notification, user_channel, user_transaction, operation_type
+from cryptomodel.readonly import SymbolRates
+from cryptomodel.cryptostore import user_settings
+from CryptoCalculatorService.data_access import helpers
+from CryptoCalculatorService.helpers import if_none_raise, if_none_raise_with_id
+
 DATE_FORMAT = "%Y-%m-%d"
-from CryptoCalculatorService.helpers import if_none_raise_with_id,if_none_raise, log_error
+
 
 class Repository:
 
@@ -44,7 +48,7 @@ class Repository:
             '-status__timestamp')[:10]
 
     def do_fetch_latest_exchange_rates_to_date(self, before_date):
-        helpers.do_connect(self.configuration)
+        helpers. do_connect(self.configuration)
         return exchange_rates.objects(Q(date__lte=before_date)).order_by(
             'date-')[:1]
 

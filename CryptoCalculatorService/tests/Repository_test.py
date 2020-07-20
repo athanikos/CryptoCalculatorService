@@ -7,7 +7,7 @@ from cryptomodel.fixer import exchange_rates
 from CryptoCalculatorService.config import configure_app
 from CryptoCalculatorService.data_access.Repository import Repository
 import pytest
-from CryptoCalculatorService.data_access import helpers
+from CryptoCalculatorService.data_access.helpers import do_connect
 from CryptoCalculatorService.tests.helpers import insert_prices_record, insert_exchange_record
 
 @pytest.fixture(scope='module')
@@ -21,7 +21,7 @@ def mock_log():
 def test_fetch_symbol_rates():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     prices.objects.all().delete()
     insert_prices_record()
     objs = repo.fetch_symbol_rates()
@@ -32,7 +32,7 @@ def test_fetch_symbol_rates():
 def test_fetch_exchange_rates():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     exchange_rates.objects.all().delete()
     insert_exchange_record()
     objs = repo.fetch_latest_exchange_rates_to_date('1900-01-01')
@@ -49,7 +49,7 @@ def test_fetch_exchange_rates():
 def test_fetch_prices_and_symbols():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     prices.objects.all().delete()
     insert_prices_record()
     objs = repo.fetch_latest_prices_to_date('2020-07-03')  # bound case : timestamp is saved as string so it cant find
@@ -64,7 +64,7 @@ def test_fetch_prices_and_symbols():
 def test_insert_user_channel():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     user_channel.objects.all().delete()
     uc = repo.insert_user_channel(1, 'da', '1')
     assert (uc.channel_type == 'da')
@@ -84,7 +84,7 @@ def test_log_when_do_connect_raises_exception(mock_log):
 def test_insert_transaction():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     user_transaction.objects.all().delete()
     ut = repo.insert_transaction(1, 1, 'OXT', 1, 1, "USD", "2020-01-01", "kraken")
     assert (ut.user_id == 1)
@@ -95,7 +95,7 @@ def test_insert_transaction():
 def test_update_transaction():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     user_transaction.objects.all().delete()
     ut = repo.insert_transaction(1, 1, 'OXT', 1, 1, "USD", "2020-01-01", "kraken")
     ut = repo.update_transaction(ut.id, 1, 1, 'OXT2', 1, 1, "EUR", "2020-01-01", "kraken")
@@ -107,7 +107,7 @@ def test_update_transaction():
 def test_update_transaction_when_does_not_exist_throws_ValueError():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     user_transaction.objects.all().delete()
     with pytest.raises(ValueError):
         repo.update_transaction(ObjectId('666f6f2d6261722d71757578'), 1, 1, 'OXT', "EUR", 1, 1, "2020-01-01",
@@ -117,7 +117,7 @@ def test_update_transaction_when_does_not_exist_throws_ValueError():
 def test_update_notification_when_does_not_exist_throws_ValueError():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     user_notification.objects.all().delete()
     with pytest.raises(ValueError):
         repo.update_notification(ObjectId('666f6f2d6261722d71757578'), 1, 'nik', "nik@test.com", 1, "field_name",
@@ -127,7 +127,7 @@ def test_update_notification_when_does_not_exist_throws_ValueError():
 def test_update_notification():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     user_notification.objects.all().delete()
 
     un = repo.insert_notification( 1, 'nik', "nik@test.com", 1, "field_name",
@@ -140,7 +140,7 @@ def test_update_notification():
 def test_delete_transaction_when_does_not_exist_throws_ValueError():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     user_transaction.objects.all().delete()
     with pytest.raises(ValueError):
         repo.delete_transaction(ObjectId('666f6f2d6261722d71757578'))
@@ -149,7 +149,7 @@ def test_delete_transaction_when_does_not_exist_throws_ValueError():
 def test_delete_transaction_when_exists():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     ut = repo.insert_transaction(1, 1, 'OXT', 1, 1, "EUR", "2020-01-01", "kraken")
     assert (len(user_transaction.objects) == 1)
     ut = repo.delete_transaction(ut.id)
@@ -159,7 +159,7 @@ def test_delete_transaction_when_exists():
 def test_delete_notification_when_exists():
     config = configure_app()
     repo = Repository(config, mock_log)
-    helpers.do_connect(config)
+    do_connect(config)
     user_notification.objects.all().delete()
     ut = repo.insert_notification(1, 'nik', 'nik@OXT.com', 100, 'field1', ">", 1, 1,"OXT","telegram")
     assert (len(user_notification.objects) == 1)
