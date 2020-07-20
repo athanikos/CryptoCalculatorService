@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import jsonify
-from CryptoCalculatorService.calculator.BalanceCalculator import BalanceCalculator
-from CryptoCalculatorService.data_access.Repository import Repository
+from calculator.BalanceCalculator import BalanceCalculator
+from dataaccess.Repository import Repository
 import jsonpickle
 from CryptoCalculatorService.helpers import log_error
 from kafkaHelper.kafkaHelper import consume
@@ -70,6 +70,7 @@ class CalculatorService:
             print(da_item)
             if da_item.action == Action.added:
                 #delete before inserting ?
+
                 cs.repo.insert_transaction(symbol=da_item.symbol, currency=da_item.currency,
                                              user_id=da_item.user_id, volume=da_item.volume, value=da_item.value,
                                              price=da_item.price,
