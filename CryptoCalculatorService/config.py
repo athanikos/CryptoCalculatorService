@@ -4,8 +4,8 @@ from werkzeug.utils import import_string
 
 DB = "calculator_service"
 PORT = 27017
-MONGO_IP = "134.122.79.43"
-KAFKA_BROKERS = "192.168.1.57:9092"
+MONGO_IP = "127.0.0.1"
+KAFKA_BROKERS = "127.0.0.1:9092"
 TRANSACTIONS_TOPIC_NAME = "transactions_2"
 
 
