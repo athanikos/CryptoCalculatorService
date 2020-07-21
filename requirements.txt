@@ -7,7 +7,7 @@ pytest==4.6.9
 pytest-cov
 pytest-mock==2.0.0
 python-dotenv==0.10.5
-keyring==18.0.1
+keyring==21.2.1
 coverage
 setuptools~=40.8.0
 pymongo~=3.10.1
