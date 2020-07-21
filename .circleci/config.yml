@@ -21,7 +21,7 @@ jobs:
             virtualenv venv
             . venv/bin/activate
             pip install -r requirements.txt
-      - run: python setup_dev_user.py 
+      - run: python setup_dev_user.py
       - run:
           name: "Setup custom environment variables"
           command: |
