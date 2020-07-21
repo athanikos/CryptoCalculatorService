@@ -1,0 +1,39 @@
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.1
+working_directory: ~/CryptoCalculatorService
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.4  # primary container for this build
+      - image: circleci/mongo:4.2.3
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: admin
+    steps:
+      - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.6/site-packages
+      - run:
+          name: Install Python dependencies in a venv
+          command: |
+            virtualenv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - run:
+          name: "Setup custom environment variables"
+          command: |
+            echo 'export FLASK_ENV=development'
+      - run:
+          name: Wait for Mongo to start
+          command: dockerize -wait tcp://127.0.0.1:27017 -timeout 120s
+      - run:
+          name: Runnning tests
+          command: |
+            . venv/bin/activate
+            py.test -vv CryptoCalculatorService/test
+      - run:
+          name: Code coverage
+          command: |
+             . venv/bin/activate
+             py.test --cov=CryptoCalculatorService

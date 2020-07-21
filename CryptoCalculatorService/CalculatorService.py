@@ -1,12 +1,14 @@
 from datetime import datetime
 from flask import jsonify
 from calculator.BalanceCalculator import BalanceCalculator
-from dataaccess.Repository import Repository
+from cryptodataaccess.Repository import Repository
+from cryptodataaccess.TransactionRepository import TransactionRepository
 import jsonpickle
 from CryptoCalculatorService.helpers import log_error
 from kafkaHelper.kafkaHelper import consume
 from CryptoCalculatorService.scheduler.server import start
 from kafkaHelper.kafkaHelper import Action
+
 DATE_FORMAT = "%Y-%m-%d"
 
 
@@ -14,6 +16,7 @@ class CalculatorService:
 
     def __init__(self, config):
         self.repo = Repository(config, log_error)
+        self.trans_repo = TransactionRepository(config, log_error)
         start(self)
 
     def compute(self, user_id):
@@ -30,17 +33,16 @@ class CalculatorService:
         return jsonify(self.repo.fetch_latest_prices_to_date(before_date=now).to_json())
 
     def get_transactions(self, user_id):
-        repo = Repository(self.configuration, log_error)
-        return jsonify(repo.fetch_transactions(user_id).to_json())
+        return jsonify(self.trans_repo.fetch_transactions(user_id).to_json())
 
     def insert_transaction(self, user_id, volume, symbol, value, price, date, source):
-        repo = Repository(self.configuration, log_error)
-        return repo.insert_transaction(user_id=user_id, volume=volume, symbol=symbol, value=value, price=price,
-                                       date=date, source=source, currency="EUR")  # fix currency
+        return self.trans_repo.insert_transaction(user_id=user_id, volume=volume, symbol=symbol, value=value, price=price,
+                                       date=date, source=source, currency="EUR"
+                                    , source_id=None, operation='Added')  # fix currency
 
     def update_transaction(self, id, user_id, volume, symbol, value, price, date, source):
-        repo = Repository(self.configuration, log_error)
-        return repo.update_transaction(id, user_id, volume, symbol, value, price, "EUR", date, source)  # fix
+        return self.trans_repo.update_transaction(id, user_id, volume, symbol, value, price, "EUR", date, source,
+                                                  source_id=id,operation='Modified')  # fix
 
     def get_user_notifications(self, items_count):
         repo = Repository(self.configuration)
@@ -63,22 +65,15 @@ class CalculatorService:
         return repo.insert_user_channel(user_id, channel_type, chat_id)
 
     def synchronize_transactions(cs):
-        items = consume(topic=cs.repo.configuration.TRANSACTIONS_TOPIC_NAME, broker_names=cs.repo.configuration.KAFKA_BROKERS,
+        items = consume(topic=cs.repo.configuration.TRANSACTIONS_TOPIC_NAME,
+                        broker_names=cs.repo.configuration.KAFKA_BROKERS,
                         consumer_group="CalculatorService")
-        for trans in items:
-            da_item = jsonpickle.decode( trans,keys=False)
-            print(da_item)
-            if da_item.action == Action.added:
-                #delete before inserting ?
-
-                cs.repo.insert_transaction(symbol=da_item.symbol, currency=da_item.currency,
-                                             user_id=da_item.user_id, volume=da_item.volume, value=da_item.value,
-                                             price=da_item.price,
-                                             date=da_item.date, source=da_item.source)
-            elif da_item.action == Action.Modified:
-                cs.repo.update_transaction(symbol=da_item.symbol, currency=da_item.currency,
-                                             user_id=da_item.user_id, volume=da_item.volume, value=da_item.value,
-                                             price=da_item.price,
-                                             date=da_item.date, source=da_item.source)
-            elif da_item.action == Action.Deleted:
-                cs.repo.delete_transaction(id = da_item.id)#fix it not the same id
+        for i in items:
+            trans = jsonpickle.decode(i, keys=False)
+            cs.trans_repo.do_delete_transaction_by_source_id(source_id=trans.id, throw_if_does_not_exist=False)
+            if trans.operation == "Added" or trans.operation == "Modified":
+                cs.trans_repo.insert_transaction(symbol=trans.symbol, currency=trans.currency,
+                                                 user_id=trans.user_id, volume=trans.volume, value=trans.value,
+                                                 price=trans.price,
+                                                 date=trans.date, source=trans.source, source_id=trans.id,
+                                                 operation=trans.operation)
