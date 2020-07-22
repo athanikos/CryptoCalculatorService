@@ -17,8 +17,10 @@ job_defaults = {
     'max_instances': 1
 }
 
-
+scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults, timezone=utc)
 def start(cc):
-    scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults, timezone=utc)
     scheduler.add_job(cc.synchronize_transactions,trigger="interval", seconds=1)
     scheduler.start()
+
+def stop():
+    scheduler.shutdown()

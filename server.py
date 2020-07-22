@@ -3,9 +3,12 @@ from flask import Flask, jsonify, request
 from flask.blueprints import Blueprint
 from CryptoCalculatorService.config import configure_app
 from CryptoCalculatorService.CalculatorService import CalculatorService
+import atexit
+from CryptoCalculatorService.scheduler.server import stop
 
 bp = Blueprint(__name__.split('.')[0], __name__.split('.')[0])
 cs = CalculatorService(configure_app())
+
 
 def create_app():
     the_app = Flask(__name__.split('.')[0], instance_relative_config=True)
@@ -29,19 +32,19 @@ def get_transactions(user_id):
 @bp.route("/api/v1/transaction",
           methods=['POST'])
 def insert_transaction():
-     un = cs.insert_transaction(request.json['user_id'], request.json['volume'], request.json['symbol'],
-                                request.json['value'], request.json['price'], request.json['date'],
-                                request.json['source'])
-     return jsonify(un.to_json())
+    un = cs.insert_transaction(request.json['user_id'], request.json['volume'], request.json['symbol'],
+                               request.json['value'], request.json['price'], request.json['date'],
+                               request.json['source'])
+    return jsonify(un.to_json())
 
 
 @bp.route("/api/v1/transaction",
           methods=['PUT'])
 def update_transaction():
-    un = cs.update_transaction( request.json['id'],
-                                request.json['user_id'], request.json['volume'], request.json['symbol'],
-                                request.json['value'], request.json['price'], request.json['date'],
-                                request.json['source'])
+    un = cs.update_transaction(request.json['id'],
+                               request.json['user_id'], request.json['volume'], request.json['symbol'],
+                               request.json['value'], request.json['price'], request.json['date'],
+                               request.json['source'])
     return jsonify(un.to_json())
 
 
@@ -67,16 +70,16 @@ def get_user_notifications():
           methods=['POST'])
 def insert_notification():
     un = cs.insert_user_notification(request.json['user_id'],
-                                      request.json['user_name'],
-                                      request.json['user_email'],
-                                      request.json['condition_value'],
-                                      request.json['condition_value'],
-                                      request.json['operator'],
-                                      request.json['notify_times'],
-                                      request.json['notify_every_in_seconds'],
-                                      request.json['symbol'],
-                                      request.json['channel_type']
-                                      )
+                                     request.json['user_name'],
+                                     request.json['user_email'],
+                                     request.json['condition_value'],
+                                     request.json['condition_value'],
+                                     request.json['operator'],
+                                     request.json['notify_times'],
+                                     request.json['notify_every_in_seconds'],
+                                     request.json['symbol'],
+                                     request.json['channel_type']
+                                     )
     return jsonify(un.to_json())
 
 
@@ -103,6 +106,9 @@ def handle_error(error):
 
     return jsonify(response), status_code
 
+
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: stop())
 
 if __name__ == '__main__':
     create_app().run()
