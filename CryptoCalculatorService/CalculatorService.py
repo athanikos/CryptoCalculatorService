@@ -7,8 +7,6 @@ import jsonpickle
 from CryptoCalculatorService.helpers import log_error
 from kafkaHelper.kafkaHelper import consume
 from CryptoCalculatorService.scheduler.server import start
-from kafkaHelper.kafkaHelper import Action
-
 DATE_FORMAT = "%Y-%m-%d"
 
 
@@ -67,12 +65,13 @@ class CalculatorService:
     def synchronize_transactions(cs):
         items = consume(topic=cs.repo.configuration.TRANSACTIONS_TOPIC_NAME,
                         broker_names=cs.repo.configuration.KAFKA_BROKERS,
-                        consumer_group="CalculatorService")
+                        consumer_group="CalculatorService",
+                        auto_offset_reset='largest' )
         for i in items:
             trans = jsonpickle.decode(i, keys=False)
             cs.trans_repo.do_delete_transaction_by_source_id(source_id=trans.id, throw_if_does_not_exist=False)
             if trans.operation == "Added" or trans.operation == "Modified":
-                cs.trans_repo.insert_transaction(symbol=trans.symbol, currency=trans.currency,
+                        cs.trans_repo.insert_transaction(symbol=trans.symbol, currency=trans.currency,
                                                  user_id=trans.user_id, volume=trans.volume, value=trans.value,
                                                  price=trans.price,
                                                  date=trans.date, source=trans.source, source_id=trans.id,
