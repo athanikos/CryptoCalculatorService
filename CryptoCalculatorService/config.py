@@ -25,7 +25,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
-    SERVERNAME = "localhost"
+    SERVERNAME = "127.0.0.1"
     PORT = PORT
     DATABASE = DB
     USERNAME = "admin"
