@@ -31,7 +31,11 @@ jobs:
           command: dockerize -wait tcp://127.0.0.1:27017 -timeout 120s
       - run:
           name:  install mongo clients
-          command: sudo apt-get install mongodb-clients
+          command: |
+              wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+              echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+              sudo apt-get update
+              sudo apt-get install mongodb-org-shell
       - run:
           name: Configure MongoDB
           command: |
