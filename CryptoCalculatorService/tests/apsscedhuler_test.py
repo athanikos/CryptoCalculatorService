@@ -39,6 +39,6 @@ def test_basic():
     user_transaction.objects.all().delete()
     produce_with_action(tr.configuration.KAFKA_BROKERS, tr.configuration.TRANSACTIONS_TOPIC_NAME, jsonpickle.encode(ut) )
     uts = tr.fetch_transactions(1)
-
+    time.sleep(5)
     assert (len(uts) == 1 )
     assert (uts[0].source_id ==  ObjectId('666f6f2d6261722d71757578') )
