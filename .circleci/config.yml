@@ -35,6 +35,7 @@ jobs:
       - run:
           name: Configure MongoDB
           command: |
+            mongo admin --eval 'use admin'
             mongo admin --eval 'db.createUser( { user: "test", pwd: "test", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] } )'
       - run:
           name: Runnning tests
