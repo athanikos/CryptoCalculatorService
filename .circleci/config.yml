@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Configure MongoDB
           command: |
-            mongo admin --eval 'db.createUser( { user: "admin", pwd: "admin", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] } )'
+            mongo admin --eval 'db.createUser( { user: "admin", pwd: "admin", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ],  mechanisms:[ "SCRAM-SHA-1"]  } )'
       - run:
           name: Runnning tests
           command: |
