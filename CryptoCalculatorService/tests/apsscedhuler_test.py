@@ -36,6 +36,9 @@ def test_basic():
     ut.value = 1000
     ut.price = 10
     ut.date = "2020-01-01"
+    print(cfg.USERNAME)
+    print(cfg.PASSWORD)
+
     user_transaction.objects.all().delete()
     produce_with_action(tr.configuration.KAFKA_BROKERS, tr.configuration.TRANSACTIONS_TOPIC_NAME, jsonpickle.encode(ut) )
     uts = tr.fetch_transactions(1)
