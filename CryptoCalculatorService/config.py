@@ -28,8 +28,8 @@ class DevelopmentConfig(BaseConfig):
     SERVERNAME = "localhost"
     PORT = PORT
     DATABASE = DB
-    USERNAME = "test"
-    PASSWORD = "test"
+    USERNAME = "admin"
+    PASSWORD = "admin"
     LOGS_PATH = '../CryptoCalculatorService/logs/CryptoModel.log'
     KAFKA_BROKERS = KAFKA_BROKERS
     TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
