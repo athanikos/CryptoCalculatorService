@@ -60,4 +60,6 @@ def configure_app():
     cfg = import_string(config_name)()
     cfg.USERNAME = get_password('CryptoCalculatorService', 'USERNAME')
     cfg.PASSWORD = get_password('CryptoCalculatorService', cfg.USERNAME)
+    print(cfg.USERNAME)
+    print(cfg.PASSWORD)
     return cfg
