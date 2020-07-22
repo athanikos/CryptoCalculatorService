@@ -35,7 +35,8 @@ jobs:
       - run:
           name: Configure MongoDB
           command: |
-            mongo admin --eval 'db.addUser( { user: "test", pwd: "test", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] } )'
+            mongo admin --eval 'db.addUser( { user: "admin", pwd: "admin", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] } )'
+            mongo main -uadmin -padmin --authenticationDatabase admin --eval 'db.addUser({ user: "test", pwd: "test", roles: [{ role: "dbOwner", db: "CryptoCalculatorService" }]})'
       - run:
           name: Runnning tests
           command: |
