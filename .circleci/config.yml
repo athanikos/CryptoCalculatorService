@@ -30,8 +30,12 @@ jobs:
           name: Wait for Mongo to start
           command: dockerize -wait tcp://127.0.0.1:27017 -timeout 120s
       - run:
+          name:  install mongo clients
+          command: sudo apt-get install mongodb-clients
+      - run:
           name: Configure MongoDB
           command: |
+
             ./mongo admin --eval 'db.createUser({ user: "admin", pwd: "admin", roles: [{ role: "userAdminAnyDatabase", db: "admin" }]})'
             ./mongo test -uadmin -padmin --authenticationDatabase admin --eval 'db.createUser({ user: "test", pwd: "test", roles: [{ role: "dbOwner", db: "CryptoCalculatorService" }]})'
 
