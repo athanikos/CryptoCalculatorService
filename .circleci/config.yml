@@ -6,11 +6,11 @@ jobs:
   build:
     docker:
       - image: circleci/python:3.6.4  # primary container for this build
-      - image: circleci/mongo:4.2.3
       - image: spotify/kafka
         environment:
           MONGO_INITDB_ROOT_USERNAME: admin
           MONGO_INITDB_ROOT_PASSWORD: admin
+      - image: circleci/mongo:4.2.3
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
