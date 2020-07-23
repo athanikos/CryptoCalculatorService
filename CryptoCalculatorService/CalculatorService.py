@@ -74,7 +74,13 @@ class CalculatorService:
 
                             )
             for i in items:
+
                 trans = jsonpickle.decode(i, keys=False)
+
+                print("consumed")
+                print(trans)
+                print("end consumed")
+
                 cs.trans_repo.do_delete_transaction_by_source_id(source_id=trans.id, throw_if_does_not_exist=False)
                 if trans.operation == "Added" or trans.operation == "Modified":
                     cs.trans_repo.insert_transaction(symbol=trans.symbol, currency=trans.currency,

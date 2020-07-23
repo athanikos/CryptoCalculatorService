@@ -19,7 +19,7 @@ scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_de
 
 
 def start(cs):
-    scheduler.add_job(cs.synchronize_transactions, trigger="interval", seconds=1)
+    scheduler.add_job(cs.synchronize_transactions,'cron', second='*/5')
     scheduler.start()
 
 
