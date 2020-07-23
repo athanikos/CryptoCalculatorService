@@ -63,10 +63,9 @@ class CalculatorService:
         repo = Repository(self.configuration)
         return repo.insert_user_channel(user_id, channel_type, chat_id)
 
-    def synchronize_transactions(cs, testmode=False):
+    def synchronize_transactions(cs, test_mode=False):
         exit = False
         if 1 == 1 and exit == False:
-            print("1==1")
             items = consume(topic=cs.repo.configuration.TRANSACTIONS_TOPIC_NAME,
                             broker_names=cs.repo.configuration.KAFKA_BROKERS,
                             consumer_group="CalculatorService",
@@ -75,7 +74,6 @@ class CalculatorService:
 
                             )
             for i in items:
-                print("in i in items")
                 trans = jsonpickle.decode(i, keys=False)
                 cs.trans_repo.do_delete_transaction_by_source_id(source_id=trans.id, throw_if_does_not_exist=False)
                 if trans.operation == "Added" or trans.operation == "Modified":
@@ -84,5 +82,5 @@ class CalculatorService:
                                                      price=trans.price,
                                                      date=trans.date, source=trans.source, source_id=trans.id,
                                                      operation=trans.operation)
-            if testmode:
+            if test_mode:
                 exit = True
