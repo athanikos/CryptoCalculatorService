@@ -5,7 +5,6 @@ from cryptomodel.cryptostore import user_transaction
 from calculator.BalanceCalculator import BalanceCalculator
 from cryptodataaccess.RatesRepository import RatesRepository
 from cryptodataaccess.TransactionRepository import TransactionRepository
-
 from CryptoCalculatorService.config import  configure_app
 from CryptoCalculatorService.tests.helpers import mock_log, insert_exchange_record
 from cryptodataaccess.helpers import do_connect

@@ -10,7 +10,7 @@ from CryptoCalculatorService.config import configure_app
 from cryptodataaccess.TransactionRepository import TransactionRepository
 from cryptodataaccess.helpers import do_connect, log_error
 from CryptoCalculatorService.CalculatorService import CalculatorService
-from CryptoCalculatorService.scheduler.server import start, stop
+from CryptoCalculatorService.scedhuler.server import start, stop
 
 
 @pytest.fixture

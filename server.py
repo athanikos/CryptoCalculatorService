@@ -4,10 +4,10 @@ from flask.blueprints import Blueprint
 from CryptoCalculatorService.config import configure_app
 from CryptoCalculatorService.CalculatorService import CalculatorService
 import atexit
-from CryptoCalculatorService.scheduler.server import stop
+from CryptoCalculatorService.scedhuler.server import stop
 bp = Blueprint(__name__.split('.')[0], __name__.split('.')[0])
 cs = CalculatorService(configure_app())
-from CryptoCalculatorService.scheduler.server import start
+from CryptoCalculatorService.scedhuler.server import start
 
 def create_app():
     the_app = Flask(__name__.split('.')[0], instance_relative_config=True)
@@ -106,7 +106,7 @@ def handle_error(error):
     return jsonify(response), status_code
 
 
-# Shut down the scheduler when exiting the app
+# Shut down the scedhuler when exiting the app
 atexit.register(lambda: stop())
 
 if __name__ == '__main__':

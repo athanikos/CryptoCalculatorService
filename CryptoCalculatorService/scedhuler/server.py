@@ -1,3 +1,4 @@
+from apscheduler.schedulers import SchedulerAlreadyRunningError
 from pytz import utc
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.mongodb import MongoDBJobStore
@@ -20,7 +21,10 @@ scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_de
 
 def start(cs):
     scheduler.add_job(cs.synchronize_transactions,'cron', second='*/5')
-    scheduler.start()
+    try:
+        scheduler.start()
+    except SchedulerAlreadyRunningError:
+        pass #log?
 
 
 def stop():
