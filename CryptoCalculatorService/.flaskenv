@@ -1,1 +1,1 @@
-FLASK_ENV=development
+FLASK_ENV=CryptoCalculatorService.config.DevelopmentConfig
