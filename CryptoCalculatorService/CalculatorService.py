@@ -5,7 +5,7 @@ from cryptodataaccess.RatesRepository import RatesRepository
 from cryptodataaccess.TransactionRepository import TransactionRepository
 import jsonpickle
 from CryptoCalculatorService.helpers import log_error
-from kafkaHelper.kafkaHelper import consume
+from kafkaHelper.kafkaHelper import consume, produce
 
 DEFAULT_CURRENCY = "EUR"
 DATE_FORMAT = "%Y-%m-%d"
@@ -65,3 +65,13 @@ class CalculatorService:
                                                      operation=trans.operation)
             if test_mode:
                 exit = True
+
+    def compute_balances_and_push(cs):
+        items = cs.trans_repo.fetch_distinct_user_ids()
+        for user_id in items:
+            cs.compute(user_id)
+        produce(cs.trans_repo.configuration.KAFKA_BROKERS,
+                cs.trans_repo.configuration.BALANCES,
+                BalanceCalculator.compute(user_id=user_id,
+                                          date=datetime.today().strftime(DATE_FORMAT)
+                                          ))

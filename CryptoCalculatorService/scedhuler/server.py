@@ -21,6 +21,8 @@ scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_de
 
 def start(cs):
     scheduler.add_job(cs.synchronize_transactions,'cron', second='*/5')
+    scheduler.add_job(cs.compute_balances_and_push , 'cron', hour='*/1')
+
     try:
         scheduler.start()
     except SchedulerAlreadyRunningError:

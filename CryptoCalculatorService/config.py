@@ -6,8 +6,8 @@ DB = "calculator_service"
 PORT = 27017
 MONGO_IP = "127.0.0.1"
 KAFKA_BROKERS = "127.0.0.1:9092"
-TRANSACTIONS_TOPIC_NAME = "transactions_2"
-
+TRANSACTIONS_TOPIC_NAME = "transactions"
+BALANCES_TOPIC_NAME = "balances"
 
 class BaseConfig(object):
     DEBUG = False

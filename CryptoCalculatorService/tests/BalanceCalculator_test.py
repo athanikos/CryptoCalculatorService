@@ -105,12 +105,9 @@ def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
     do_connect(config)
     user_transaction.objects.all().delete()
     delete_prices()
-
     insert_prices_record()#0.08410447380210428
     insert_prices_2020706_record()#0.08672453072885744
-
     symbols = repo.fetch_symbol_rates()
-
     trans_repo.insert_transaction(1, volume=19796, symbol="ADA", value=69, price=1, currency="EUR", date="2020-07-13",
                             source="kraken", source_id=None, operation="Added")
     transactions = trans_repo.fetch_transactions(1)
