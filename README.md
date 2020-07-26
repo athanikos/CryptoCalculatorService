@@ -16,7 +16,3 @@ start kafka
 
 start mongo 
 > sudo service mongod start 
-
-
-
-start mongo instance 
