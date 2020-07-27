@@ -113,8 +113,6 @@ def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
     transactions = trans_repo.fetch_transactions(1)
     assert (len(transactions) == 1)
     symbols = repo.fetch_symbol_rates()
-
-
     ers = repo.fetch_latest_exchange_rates_to_date('2051-07-15')
     bc = BalanceCalculator(transactions, symbols.rates, ers, "EUR")
     # should return 2020706 = 0.08672453072885744

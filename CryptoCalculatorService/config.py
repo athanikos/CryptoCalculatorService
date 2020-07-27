@@ -8,6 +8,8 @@ MONGO_IP = "127.0.0.1"
 KAFKA_BROKERS = "127.0.0.1:9092"
 TRANSACTIONS_TOPIC_NAME = "transactions"
 BALANCES_TOPIC_NAME = "balances"
+USER_NOTIFICATIONS_TOPIC_NAME = "user_notifications"
+
 
 class BaseConfig(object):
     DEBUG = False
@@ -20,6 +22,7 @@ class BaseConfig(object):
     LOGS_PATH = '../CryptoCalculatorService/logs/CryptoModel.log'
     KAFKA_BROKERS = KAFKA_BROKERS
     TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
+    USER_NOTIFICATIONS_TOPIC_NAME = USER_NOTIFICATIONS_TOPIC_NAME
 
 
 class DevelopmentConfig(BaseConfig):
@@ -33,6 +36,7 @@ class DevelopmentConfig(BaseConfig):
     LOGS_PATH = '../CryptoCalculatorService/logs/CryptoModel.log'
     KAFKA_BROKERS = KAFKA_BROKERS
     TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
+    USER_NOTIFICATIONS_TOPIC_NAME = USER_NOTIFICATIONS_TOPIC_NAME
 
 
 class ProductionConfig(BaseConfig):
@@ -46,6 +50,7 @@ class ProductionConfig(BaseConfig):
     LOGS_PATH = '../CryptoCalculatorService/logs/CryptoUsersService.log'
     KAFKA_BROKERS = KAFKA_BROKERS
     TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
+    USER_NOTIFICATIONS_TOPIC_NAME = USER_NOTIFICATIONS_TOPIC_NAME
 
 
 config = {
