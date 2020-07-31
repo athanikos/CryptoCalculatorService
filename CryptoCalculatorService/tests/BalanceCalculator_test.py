@@ -3,6 +3,7 @@ from datetime import date, datetime
 from cryptodataaccess.Rates.RatesMongoStore import RatesMongoStore
 from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
 from cryptodataaccess.Users import UsersMongoStore
+from cryptomodel.fixer import exchange_rates
 from tests.helpers import insert_prices_record, \
     insert_prices_2020706_record, delete_prices
 from cryptomodel.cryptostore import user_transaction
@@ -60,6 +61,7 @@ def test_bc_create_1_item():
 def test_bc_create_2_items():
     config = configure_app()
 
+
     store = TransactionMongoStore(config, mock_log)
     trans_repo = TransactionRepository(store)
     users_store = RatesMongoStore(config, mock_log)
@@ -68,8 +70,11 @@ def test_bc_create_2_items():
     do_connect(config)
     dt_now = datetime.today().strftime(DATE_FORMAT)
 
+
     insert_exchange_record()
     insert_prices_record()
+
+
     user_transaction.objects.all().delete()
     trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
                             source_id=None

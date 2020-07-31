@@ -14,8 +14,8 @@ pymongo~=3.10.1
 Werkzeug~=1.0.1
 jsonpickle
 apscheduler
-cryptomodel-athanikos==2.3.6
-cryptodataaccess-athanikos==0.2.5
+cryptomodel-athanikos==2.3.9
+cryptodataaccess-athanikos==0.2.6
 KafkaHelper-athanikos==0.2.2
 kafka-python==2.0.1
 keyrings.alt
