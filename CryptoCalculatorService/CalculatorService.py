@@ -32,21 +32,27 @@ class CalculatorService:
         self.users_repo = UsersRepository(self.users_store)
 
     def compute(self, user_id):
-        now = datetime.today().strftime(DATE_FORMAT)
-        self.compute_with_upperbound_dates(user_id, now, now)
+        now = datetime.today()
+        return self.compute_with_upperbound_dates(user_id, now, now)
 
     def compute_with_upperbound_dates(self, user_id, upper_bound_symbol_rates_date, upper_bound_transaction_date):
         now = datetime.today().strftime(DATE_FORMAT)
-        bc = BalanceCalculator(self.trans_repo.get_transactions(user_id),
+
+        # move to repo?
+        preferred_currency = self.users_repo.get_user_settings(user_id)
+        if preferred_currency is None:
+            preferred_currency = DEFAULT_CURRENCY
+
+        bc = BalanceCalculator(self.trans_repo.get_transactions_before_date(user_id, upper_bound_transaction_date),
                                self.rates_repo.fetch_symbol_rates_for_date(upper_bound_symbol_rates_date).rates,
                                self.rates_repo.fetch_latest_exchange_rates_to_date(upper_bound_symbol_rates_date),
-                               DEFAULT_CURRENCY  # fix get from user_settings
+                               preferred_currency,
+                               upper_bound_symbol_rates_date=upper_bound_symbol_rates_date,
+                               upper_bound_transaction_date=upper_bound_transaction_date
                                )
-        return jsonpickle.encode(bc.compute(user_id=user_id, upper_bound_symbol_rates_date= upper_bound_symbol_rates_date,
-                                            date_time_calculated=now, upper_bound_transaction_date = upper_bound_transaction_date,
 
-                                            ))
-
+        return jsonpickle.encode(
+            bc.compute(user_id=user_id, date=datetime.now()))
 
     def get_prices(self, items_count):
         now = datetime.today().strftime(DATE_FORMAT)
@@ -56,18 +62,18 @@ class CalculatorService:
         return jsonify(self.trans_repo.get_transactions(user_id).to_json())
 
     def insert_transaction(self, user_id, volume, symbol, value, price, date, source):
-        trans =  self.trans_repo.add_transaction(user_id=user_id, volume=volume, symbol=symbol, value=value,
-                                                  price=price,
-                                                  date=date, source=source, currency=DEFAULT_CURRENCY
-                                                  , source_id=None)  # fix get from user_settings
+        trans = self.trans_repo.add_transaction(user_id=user_id, volume=volume, symbol=symbol, value=value,
+                                                price=price,
+                                                date=date, source=source, currency=DEFAULT_CURRENCY
+                                                , source_id=None)  # fix get from user_settings
         self.trans_repo.commit()
         return trans
 
     def update_transaction(self, id, user_id, volume, symbol, value, price, date, source):
 
         trans = self.trans_repo.update_transaction(id, user_id, volume, symbol, value, price, DEFAULT_CURRENCY, date,
-                                                  source,
-                                                  source_id=id)  # fix get from user_settings
+                                                   source,
+                                                   source_id=id)  # fix get from user_settings
         self.trans_repo.commit()
         return trans
 
@@ -116,7 +122,6 @@ class CalculatorService:
                                               price=trans.price,
                                               date=trans.date, source=trans.source, source_id=trans.id)
                 cs.trans_repo.commit()
-
 
     def compute_balances_and_push(cs):
         items = cs.trans_repo.fetch_distinct_user_ids()
