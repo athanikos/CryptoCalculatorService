@@ -1,10 +1,16 @@
 from datetime import date, datetime
+
+from cryptodataaccess.Rates.RatesMongoStore import RatesMongoStore
+from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
+from cryptodataaccess.Users import UsersMongoStore
 from tests.helpers import insert_prices_record, \
     insert_prices_2020706_record, delete_prices
 from cryptomodel.cryptostore import user_transaction
 from calculator.BalanceCalculator import BalanceCalculator
-from cryptodataaccess.RatesRepository import RatesRepository
-from cryptodataaccess.TransactionRepository import TransactionRepository
+from cryptodataaccess.Rates.RatesRepository import RatesRepository
+from cryptodataaccess.Transactions.TransactionRepository import TransactionRepository
+from cryptodataaccess.Users.UsersRepository import UsersRepository
+
 from CryptoCalculatorService.config import  configure_app
 from CryptoCalculatorService.tests.helpers import mock_log, insert_exchange_record
 from cryptodataaccess.helpers import do_connect
@@ -13,20 +19,30 @@ DATE_FORMAT = '%Y-%m-%d'
 
 def test_bc_create_1_item():
     config = configure_app()
-    repo = TransactionRepository(config, mock_log)
-    rates_repo = RatesRepository(config,mock_log)
+
+    store = TransactionMongoStore(config, mock_log)
+    trans_repo = TransactionRepository(store)
+    users_store = RatesMongoStore(config, mock_log)
+    rates_repo = RatesRepository(users_store)
+
     do_connect(config)
+
+
+
     user_transaction.objects.all().delete()
     delete_prices()
     insert_exchange_record()
     insert_prices_record()
-    repo.insert_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
-                            source_id=None,operation="Added"
+    trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
+                            source_id=None
                             )
-    transactions = repo.fetch_transactions(1)
+    trans_repo.commit()
+    transactions = trans_repo.get_transactions(1)
     symbols = rates_repo.fetch_symbol_rates()
+    dt_now = datetime.today().strftime(DATE_FORMAT)
     ers = rates_repo.fetch_latest_exchange_rates_to_date('2051-07-02')
-    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR")
+
+    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR",upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
     sr = bc.symbol_rates["BTC"]
     assert (sr.price == 8101.799293468747)
     assert (sr.volume_24h == 13467618568.254385)
@@ -34,7 +50,7 @@ def test_bc_create_1_item():
     assert (sr.percent_change_24h == -0.85068831)
     assert (sr.percent_change_7d == -1.26435364)
     assert (sr.market_cap == 149249013266.08475)
-    dt_now = datetime.today().strftime(DATE_FORMAT)
+
     out = bc.compute(1, dt_now)
     assert (len(out.user_grouped_symbol_values) == 1)
     assert (out.user_grouped_symbol_values[0].user_symbol_values[0].converted_value == 10 * 8101.799293468747)
@@ -43,26 +59,32 @@ def test_bc_create_1_item():
 
 def test_bc_create_2_items():
     config = configure_app()
-    repo = TransactionRepository(config, mock_log)
-    rates_repo = RatesRepository(config,mock_log)
+
+    store = TransactionMongoStore(config, mock_log)
+    trans_repo = TransactionRepository(store)
+    users_store = RatesMongoStore(config, mock_log)
+    rates_repo = RatesRepository(users_store)
+
     do_connect(config)
+    dt_now = datetime.today().strftime(DATE_FORMAT)
+
     insert_exchange_record()
     insert_prices_record()
     user_transaction.objects.all().delete()
-    repo.insert_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
-                            source_id=None, operation="Added"
+    trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
+                            source_id=None
                             )
-    repo.insert_transaction(1, volume=2, symbol="BTC", value=2, price=1, currency="EUR", date="2020-01-01",
-                            source="kraken", source_id=None,operation="Added" )
-
-    transactions = repo.fetch_transactions(1)
+    trans_repo.add_transaction(1, volume=2, symbol="BTC", value=2, price=1, currency="EUR", date="2020-01-01",
+                            source="kraken", source_id=None)
+    trans_repo.commit()
+    transactions = trans_repo.get_transactions(1)
     assert (len(transactions) == 2 )
     symbols = rates_repo.fetch_symbol_rates()
     ers = rates_repo.fetch_latest_exchange_rates_to_date('2051-07-02')
-    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR")
+    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR", upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
     sr = bc.symbol_rates["BTC"]
-    dt_now = datetime.today().strftime(DATE_FORMAT)
-    tsv =  bc.compute(1, dt_now)
+
+    tsv =  bc.compute(user_id=1, date= dt_now)
     assert (len(tsv.user_grouped_symbol_values) == 1)
     assert (tsv.user_grouped_symbol_values[0].volume == 12)
     assert ( len(tsv.user_grouped_symbol_values[0].user_symbol_values) == 2)
@@ -72,21 +94,28 @@ def test_bc_create_2_items():
 
 def test_bc_create_ADA_19796():
     config = configure_app()
-    repo = TransactionRepository(config, mock_log)
-    rates_repo = RatesRepository(config,mock_log)
+    store = TransactionMongoStore(config, mock_log)
+    trans_repo = TransactionRepository(store)
+    users_store = RatesMongoStore(config, mock_log)
+    rates_repo = RatesRepository(users_store)
     do_connect(config)
+
+    dt_now = datetime.today().strftime(DATE_FORMAT)
+
     insert_exchange_record()
     insert_prices_2020706_record()
     user_transaction.objects.all().delete()
-    repo.insert_transaction(1,volume=19796,symbol="ADA", value=69, price=1,currency="EUR",date="2020-07-13",source="kraken",
-                            source_id=None,operation="Added"
+    trans_repo.add_transaction(1,volume=19796,symbol="ADA", value=69, price=1,currency="EUR",date="2020-07-13",source="kraken",
+                            source_id=None
                             )
-    transactions = repo.fetch_transactions(1)
+    trans_repo.commit()
+
+    transactions = trans_repo.get_transactions(1)
     assert (len(transactions) == 1 )
     symbols = rates_repo.fetch_symbol_rates()
     dt_now = datetime.today().strftime(DATE_FORMAT)
     ers = rates_repo.fetch_latest_exchange_rates_to_date(dt_now)
-    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR")
+    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR",upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
     sr = bc.symbol_rates["BTC"]
 
     tsv =  bc.compute(1, dt_now)
@@ -100,21 +129,26 @@ def test_bc_create_ADA_19796():
 
 def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
     config = configure_app()
-    repo = RatesRepository(config, mock_log)
-    trans_repo = TransactionRepository(config,mock_log)
-    do_connect(config)
+    store = TransactionMongoStore(config, mock_log)
+    trans_repo = TransactionRepository(store)
+    rates_store = RatesMongoStore(config, mock_log)
+    rates_repo = RatesRepository(rates_store)
+
     user_transaction.objects.all().delete()
     delete_prices()
     insert_prices_record()#0.08410447380210428
     insert_prices_2020706_record()#0.08672453072885744
-    symbols = repo.fetch_symbol_rates()
-    trans_repo.insert_transaction(1, volume=19796, symbol="ADA", value=69, price=1, currency="EUR", date="2020-07-13",
-                            source="kraken", source_id=None, operation="Added")
-    transactions = trans_repo.fetch_transactions(1)
+    symbols = rates_repo.fetch_symbol_rates()
+    trans_repo.add_transaction(1, volume=19796, symbol="ADA", value=69, price=1, currency="EUR", date="2020-07-13",
+                            source="kraken", source_id=None)
+    trans_repo.commit()
+    dt_now = datetime.today().strftime(DATE_FORMAT)
+
+    transactions = trans_repo.get_transactions(1)
     assert (len(transactions) == 1)
-    symbols = repo.fetch_symbol_rates()
-    ers = repo.fetch_latest_exchange_rates_to_date('2051-07-15')
-    bc = BalanceCalculator(transactions, symbols.rates, ers, "EUR")
+    symbols = rates_repo.fetch_symbol_rates()
+    ers = rates_repo.fetch_latest_exchange_rates_to_date('2051-07-15')
+    bc = BalanceCalculator(transactions, symbols.rates, ers, "EUR", upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
     # should return 2020706 = 0.08672453072885744
 
     assert (bc.symbol_rates['ADA'].price == 0.08672453072885744)

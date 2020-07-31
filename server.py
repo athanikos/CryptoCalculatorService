@@ -1,13 +1,17 @@
+import atexit
+
 import pymongo
 from flask import Flask, jsonify, request
 from flask.blueprints import Blueprint
-from CryptoCalculatorService.config import configure_app
+
 from CryptoCalculatorService.CalculatorService import CalculatorService
-import atexit
+from CryptoCalculatorService.config import configure_app
 from CryptoCalculatorService.scedhuler.server import stop
+
 bp = Blueprint(__name__.split('.')[0], __name__.split('.')[0])
 cs = CalculatorService(configure_app())
 from CryptoCalculatorService.scedhuler.server import start
+
 
 def create_app():
     the_app = Flask(__name__.split('.')[0], instance_relative_config=True)

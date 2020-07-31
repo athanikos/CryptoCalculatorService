@@ -1,4 +1,5 @@
 from apscheduler.schedulers import SchedulerAlreadyRunningError
+from apscheduler.schedulers.base import STATE_RUNNING
 from pytz import utc
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.mongodb import MongoDBJobStore
@@ -30,4 +31,5 @@ def start(cs):
 
 
 def stop():
-    scheduler.shutdown()
+    if scheduler.state == STATE_RUNNING:
+        scheduler.shutdown()
