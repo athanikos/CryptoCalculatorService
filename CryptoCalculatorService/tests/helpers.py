@@ -21,6 +21,11 @@ def get_prices_2020706_record():
         return json.load(my_file)
 
 
+def get_prices_2020731_record():
+    with open('sample_records/prices_2020731.json', 'r') as my_file:
+        return json.load(my_file)
+
+
 def insert_prices_record():
     config = configure_app()
     client = pymongo.MongoClient(get_url(config))
@@ -44,6 +49,13 @@ def insert_prices_2020706_record():
     db = client[config.DATABASE]
     prices_col = db["prices"]
     prices_col.insert(get_prices_2020706_record())
+
+def insert_prices_2020731_record():
+    config = configure_app()
+    client = pymongo.MongoClient(get_url(config))
+    db = client[config.DATABASE]
+    prices_col = db["prices"]
+    prices_col.insert(get_prices_2020731_record())
 
 
 def insert_exchange_record():
