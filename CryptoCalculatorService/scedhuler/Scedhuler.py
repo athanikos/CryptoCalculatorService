@@ -122,7 +122,9 @@ class Scedhuler():
                 self.trans_repo.add_transaction(symbol=trans.symbol, currency=trans.currency,
                                               user_id=trans.user_id, volume=trans.volume, value=trans.value,
                                               price=trans.price,
-                                              date=trans.date, source=trans.source, source_id=trans.id)
+                                              date=trans.date, source=trans.source, source_id=trans.id,
+                                                order_type=trans.order_type, transaction_type= trans.type
+                                                )
                 self.trans_repo.commit()
 
     def produce_computed_user_balances(self):

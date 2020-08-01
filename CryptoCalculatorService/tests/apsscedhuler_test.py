@@ -60,6 +60,9 @@ def test_syncronize_transactions():
     ut2.value = 1000
     ut2.price = 10
     ut2.date = "2020-01-01"
+    ut2.order_type = "BUY"
+    ut2.transaction_type = "TRADE"
+
 
     transactions = [jsonpickle.encode(ut2)]
     s =Scedhuler(config)

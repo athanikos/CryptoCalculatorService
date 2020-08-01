@@ -31,4 +31,3 @@ class PricesService:
         base_price = self.get_price_per_date(symbol, base_date)
         past_price = self.get_price_per_date(symbol, past_date)
         return (base_price - past_price) / base_price
-

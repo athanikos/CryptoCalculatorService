@@ -34,7 +34,7 @@ def test_compute_with_non_existing_key():
     do_connect(config)
 
     trans_repo.add_transaction(1, 1, 'OXT', 1, 1, "EUR", "2020-01-01", "kraken",
-                               source_id=ObjectId('666f6f2d6261722d71757578'))
+                               source_id=ObjectId('666f6f2d6261722d71757578'), transaction_type="BUY", order_type="TRADE")
     trans_repo.commit()
     assert (len(user_transaction.objects) == 1)
     user_settings.objects.all().delete()
@@ -64,7 +64,7 @@ def test_compute_with_existing_key():
     user_settings.objects.all().delete()
 
     trans_repo.add_transaction(1, 1, 'BTC', 1, 1, "EUR", "2020-01-01", "kraken",
-                               source_id=ObjectId('666f6f2d6261722d71757578'))
+                               source_id=ObjectId('666f6f2d6261722d71757578'), transaction_type="BUY", order_type="TRADE")
     trans_repo.commit()
     assert (len(user_transaction.objects) == 1)
     user_settings.objects.all().delete()
@@ -93,16 +93,16 @@ def test_four_trsanctions_same_symbol():
 
     trans_repo.add_transaction(user_id=1, source_id=None, currency="EUR", date="2020-07-30", volume=1000.71140621,
                                value=211, symbol="XRP",
-                               price=0.21085, source="kraken")
+                               price=0.21085, source="kraken", transaction_type="BUY", order_type="TRADE")
     trans_repo.add_transaction(user_id=1, source_id=None, currency="EUR", date="2020-07-29", volume=245.08602519,
                                value=50, symbol="XRP",
-                               price=0.20401, source="kraken")
+                               price=0.20401, source="kraken", transaction_type="BUY", order_type="TRADE")
     trans_repo.add_transaction(user_id=1, source_id=None, currency="EUR", date="2020-07-29", volume=487.16324840,
                                value=99.93179, symbol="XRP",
-                               price=0.20527, source="kraken")
+                               price=0.20527, source="kraken", transaction_type="BUY", order_type="TRADE")
     trans_repo.add_transaction(user_id=1, source_id=None, currency="EUR", date="2020-07-28", volume=500, value=96.70500,
                                symbol="XRP",
-                               price=0.19344, source="kraken")
+                               price=0.19344, source="kraken", transaction_type="BUY", order_type="TRADE")
 
     trans_repo.commit()
     assert (len(user_transaction.objects) == 4)

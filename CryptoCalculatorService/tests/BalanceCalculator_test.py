@@ -35,7 +35,7 @@ def test_bc_create_1_item():
     insert_exchange_record()
     insert_prices_record()
     trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
-                            source_id=None
+                            source_id=None, transaction_type="BUY", order_type="TRADE"
                             )
     trans_repo.commit()
     transactions = trans_repo.get_transactions(1)
@@ -77,10 +77,10 @@ def test_bc_create_2_items():
 
     user_transaction.objects.all().delete()
     trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
-                            source_id=None
+                            source_id=None, transaction_type="BUY", order_type="TRADE"
                             )
     trans_repo.add_transaction(1, volume=2, symbol="BTC", value=2, price=1, currency="EUR", date="2020-01-01",
-                            source="kraken", source_id=None)
+                            source="kraken", source_id=None,  transaction_type="BUY", order_type="TRADE")
     trans_repo.commit()
     transactions = trans_repo.get_transactions(1)
     assert (len(transactions) == 2 )
@@ -110,8 +110,11 @@ def test_bc_create_ADA_19796():
     insert_exchange_record()
     insert_prices_2020706_record()
     user_transaction.objects.all().delete()
+
+
+
     trans_repo.add_transaction(1,volume=19796,symbol="ADA", value=69, price=1,currency="EUR",date="2020-07-13",source="kraken",
-                            source_id=None
+                            source_id=None, transaction_type="BUY", order_type="TRADE"
                             )
     trans_repo.commit()
 
@@ -145,7 +148,7 @@ def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
     insert_prices_2020706_record()#0.08672453072885744
     symbols = rates_repo.fetch_symbol_rates()
     trans_repo.add_transaction(1, volume=19796, symbol="ADA", value=69, price=1, currency="EUR", date="2020-07-13",
-                            source="kraken", source_id=None)
+                            source="kraken", source_id=None, transaction_type="BUY", order_type="TRADE")
     trans_repo.commit()
     dt_now = datetime.today().strftime(DATE_FORMAT)
 
