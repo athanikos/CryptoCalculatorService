@@ -16,9 +16,8 @@ from cryptodataaccess.Transactions.TransactionRepository import TransactionRepos
 from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
 
 from cryptodataaccess.helpers import do_connect, log_error
-from CryptoCalculatorService.CalculatorService import CalculatorService, SERVICE_NAME
-from CryptoCalculatorService.scedhuler.server import start, stop
-
+from CryptoCalculatorService.BalanceService import BalanceService, PROJECT_NAME
+from CryptoCalculatorService.scedhuler.Scedhuler import Scedhuler
 
 @pytest.fixture
 def test_client():
@@ -41,7 +40,7 @@ def mock_log():
 def test_syncronize_transactions():
     cfg = configure_app()
     do_connect(cfg)
-    cs = CalculatorService(cfg)
+    cs = BalanceService(cfg)
 
     config = configure_app()
     store = TransactionMongoStore(config, mock_log)
@@ -63,7 +62,7 @@ def test_syncronize_transactions():
     ut2.date = "2020-01-01"
 
     transactions = [jsonpickle.encode(ut2)]
-
-    cs.delete_and_insert_transactions(cs, transactions)
+    s =Scedhuler(config)
+    s.delete_and_insert_transactions(transactions)
     uts2 = repo.get_transactions(1)
     assert (len(uts2) == 1)

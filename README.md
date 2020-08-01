@@ -1,7 +1,13 @@
 ### Crypto Calculator Service
-Calculates current balance from transactions / exchange rates / symbol rates 
+1. Calculates balance based on transactions and symbol prices per date (BalanceService)
+2. Calculates symbol price per date  (PricesService)
+3. Evaluates simple expressions (A> .10 * B ) where A,B are variables from 1., 2. (evaluator)
+4. Receives notifications from users Service (scedhuler) 
+5. Pushes calculated notifications  to Notification Service 
 
-
+####
+uses mongo for storage
+uses kafka for messaging 
 
 #### unit testing setup 
 > import keyring
@@ -16,3 +22,6 @@ start kafka
 
 start mongo 
 > sudo service mongod start 
+
+
+

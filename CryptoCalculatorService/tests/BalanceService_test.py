@@ -1,5 +1,3 @@
-import json
-
 import jsonpickle
 from bson import ObjectId
 from cryptodataaccess.Transactions.TransactionRepository import TransactionRepository
@@ -11,7 +9,7 @@ from cryptodataaccess.helpers import do_connect
 from cryptomodel.cryptomodel import exchange_rates, prices
 from cryptomodel.cryptostore import user_transaction, user_settings
 
-from CryptoCalculatorService.CalculatorService import CalculatorService
+from CryptoCalculatorService.BalanceService import BalanceService
 from CryptoCalculatorService.config import config, configure_app
 from CryptoCalculatorService.tests.apsscedhuler_test import mock_log
 from CryptoCalculatorService.tests.helpers import insert_prices_record, insert_exchange_record, \
@@ -28,7 +26,7 @@ def test_compute_with_non_existing_key():
     insert_prices_record()
     insert_exchange_record()
     config = configure_app()
-    cs = CalculatorService(config)
+    cs = BalanceService(config)
     store = TransactionMongoStore(config, mock_log)
     trans_repo = TransactionRepository(store)
     users_store = UsersMongoStore(config, mock_log)
@@ -42,7 +40,7 @@ def test_compute_with_non_existing_key():
     user_settings.objects.all().delete()
     users_repo.add_user_settings(user_id=1, preferred_currency='EUR', source_id=ObjectId('666f6f2d6261722d71757578'))
     users_repo.commit()
-    out = jsonpickle.decode(cs.compute(1))
+    out = jsonpickle.decode(cs.compute_balance(1))
     assert (out.transactions[0].is_valid == False)  # OXT does not exist
 
 
@@ -55,7 +53,7 @@ def test_compute_with_existing_key():
     insert_exchange_record()
 
     config = configure_app()
-    cs = CalculatorService(config)
+    cs = BalanceService(config)
     store = TransactionMongoStore(config, mock_log)
     trans_repo = TransactionRepository(store)
 
@@ -73,7 +71,7 @@ def test_compute_with_existing_key():
     users_repo.add_user_settings(user_id=1, preferred_currency='EUR', source_id=ObjectId('666f6f2d6261722d71757578'))
     users_repo.commit()
 
-    out = jsonpickle.decode(cs.compute(1))
+    out = jsonpickle.decode(cs.compute_balance(1))
     assert (out.transactions[0].is_valid == True)  # OXT does not exist
 
 
@@ -84,7 +82,7 @@ def test_four_trsanctions_same_symbol():
     insert_prices_2020731_record()
     insert_exchange_record()
     config = configure_app()
-    cs = CalculatorService(config)
+    cs = BalanceService(config)
     store = TransactionMongoStore(config, mock_log)
     trans_repo = TransactionRepository(store)
     users_store = UsersMongoStore(config, mock_log)
@@ -112,8 +110,8 @@ def test_four_trsanctions_same_symbol():
     users_repo.add_user_settings(user_id=1, preferred_currency='EUR', source_id=ObjectId('666f6f2d6261722d71757578'))
     users_repo.commit()
 
-    out = jsonpickle.decode(cs.compute_with_upperbound_dates(1, upper_bound_symbol_rates_date="2030-01-01",
-                                                             upper_bound_transaction_date="2020-08-01"))
+    out = jsonpickle.decode(cs.compute_balance_with_upperbound_dates(1, upper_bound_symbol_rates_date="2030-01-01",
+                                                                     upper_bound_transaction_date="2020-08-01"))
     assert (len(out.transactions) == 4)
 
     assert (out.converted_value == 0.2134997315708581 * (500 + 487.16324840 + 245.08602519 + 1000.71140621))
