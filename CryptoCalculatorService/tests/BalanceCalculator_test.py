@@ -14,7 +14,7 @@ from cryptodataaccess.Users.UsersRepository import UsersRepository
 
 from CryptoCalculatorService.config import  configure_app
 from CryptoCalculatorService.tests.helpers import mock_log, insert_exchange_record
-from cryptodataaccess.helpers import do_connect
+from cryptodataaccess.helpers import do_connect, convert_to_int_timestamp
 DATE_FORMAT = '%Y-%m-%d'
 
 
@@ -34,14 +34,16 @@ def test_bc_create_1_item():
     delete_prices()
     insert_exchange_record()
     insert_prices_record()
-    trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
+    dt = date(year=2020,month=1, day =1)
+
+    trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date=dt,source="kraken",
                             source_id=None, transaction_type="BUY", order_type="TRADE"
                             )
     trans_repo.commit()
     transactions = trans_repo.get_transactions(1)
     symbols = rates_repo.fetch_symbol_rates()
-    dt_now = datetime.today().strftime(DATE_FORMAT)
-    ers = rates_repo.fetch_latest_exchange_rates_to_date('2051-07-02')
+    dt_now =  convert_to_int_timestamp(datetime.today())
+    ers = rates_repo.fetch_latest_exchange_rates_to_date(dt_now)
 
     bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR",upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
     sr = bc.symbol_rates["BTC"]
@@ -53,7 +55,7 @@ def test_bc_create_1_item():
     assert (sr.market_cap == 149249013266.08475)
 
     out = bc.compute(1, dt_now)
-    assert (len(out.user_grouped_symbol_values) == 1)
+    assert (len(out.user_grouped_symbol_values.items()) == 1)
     assert (out.user_grouped_symbol_values[0].user_symbol_values[0].converted_value == 10 * 8101.799293468747)
     assert (out.user_grouped_symbol_values[0].user_symbol_values[0].date_time_calculated == dt_now)
 
@@ -66,31 +68,30 @@ def test_bc_create_2_items():
     trans_repo = TransactionRepository(store)
     users_store = RatesMongoStore(config, mock_log)
     rates_repo = RatesRepository(users_store)
-
     do_connect(config)
-    dt_now = datetime.today().strftime(DATE_FORMAT)
-
-
     insert_exchange_record()
     insert_prices_record()
 
-
+    dt = datetime(year=2020, day=1, month=1)
     user_transaction.objects.all().delete()
-    trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date="2020-01-01",source="kraken",
-                            source_id=None, transaction_type="BUY", order_type="TRADE"
+    trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date=dt,source="kraken",
+                            source_id=None, transaction_type="TRADE", order_type="BUY"
                             )
-    trans_repo.add_transaction(1, volume=2, symbol="BTC", value=2, price=1, currency="EUR", date="2020-01-01",
-                            source="kraken", source_id=None,  transaction_type="BUY", order_type="TRADE")
+    trans_repo.add_transaction(1, volume=2, symbol="BTC", value=2, price=1, currency="EUR", date=dt,
+                            source="kraken", source_id=None,  transaction_type="TRADE", order_type="BUY")
     trans_repo.commit()
     transactions = trans_repo.get_transactions(1)
     assert (len(transactions) == 2 )
     symbols = rates_repo.fetch_symbol_rates()
-    ers = rates_repo.fetch_latest_exchange_rates_to_date('2051-07-02')
-    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR", upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
+
+    dt_now =  convert_to_int_timestamp(datetime.today())
+
+    ers = rates_repo.fetch_latest_exchange_rates_to_date(dt_now)
+    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR", upper_bound_transaction_date=dt_now,upper_bound_symbol_rates_date=dt_now)
     sr = bc.symbol_rates["BTC"]
 
     tsv =  bc.compute(user_id=1, date= dt_now)
-    assert (len(tsv.user_grouped_symbol_values) == 1)
+    assert (len(tsv.user_grouped_symbol_values.items()) == 1)
     assert (tsv.user_grouped_symbol_values[0].volume == 12)
     assert ( len(tsv.user_grouped_symbol_values[0].user_symbol_values) == 2)
     bc.compute(tsv,"EUR")
@@ -112,7 +113,7 @@ def test_bc_create_ADA_19796():
     user_transaction.objects.all().delete()
 
 
-
+    dt = datetime(year=2020, month=7, day =13 )
     trans_repo.add_transaction(1,volume=19796,symbol="ADA", value=69, price=1,currency="EUR",date="2020-07-13",source="kraken",
                             source_id=None, transaction_type="BUY", order_type="TRADE"
                             )
@@ -121,7 +122,7 @@ def test_bc_create_ADA_19796():
     transactions = trans_repo.get_transactions(1)
     assert (len(transactions) == 1 )
     symbols = rates_repo.fetch_symbol_rates()
-    dt_now = datetime.today().strftime(DATE_FORMAT)
+    dt_now = convert_to_int_timestamp(datetime.today())
     ers = rates_repo.fetch_latest_exchange_rates_to_date(dt_now)
     bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR",upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
     sr = bc.symbol_rates["BTC"]
@@ -147,15 +148,19 @@ def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
     insert_prices_record()#0.08410447380210428
     insert_prices_2020706_record()#0.08672453072885744
     symbols = rates_repo.fetch_symbol_rates()
-    trans_repo.add_transaction(1, volume=19796, symbol="ADA", value=69, price=1, currency="EUR", date="2020-07-13",
-                            source="kraken", source_id=None, transaction_type="BUY", order_type="TRADE")
+
+    dt = date(month=7,day=13,year=2020)
+    trans_repo.add_transaction(1, volume=19796, symbol="ADA", value=69, price=1, currency="EUR", date=dt,
+                            source="kraken", source_id=None, transaction_type="TRADE", order_type="BUY")
     trans_repo.commit()
     dt_now = datetime.today().strftime(DATE_FORMAT)
 
     transactions = trans_repo.get_transactions(1)
     assert (len(transactions) == 1)
     symbols = rates_repo.fetch_symbol_rates()
-    ers = rates_repo.fetch_latest_exchange_rates_to_date('2051-07-15')
+    dt_now = convert_to_int_timestamp(datetime.today())
+
+    ers = rates_repo.fetch_latest_exchange_rates_to_date(dt_now)
     bc = BalanceCalculator(transactions, symbols.rates, ers, "EUR", upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
     # should return 2020706 = 0.08672453072885744
 

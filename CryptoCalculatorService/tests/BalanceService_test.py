@@ -110,6 +110,7 @@ def test_four_trsanctions_same_symbol():
     users_repo.add_user_settings(user_id=1, preferred_currency='EUR', source_id=ObjectId('666f6f2d6261722d71757578'))
     users_repo.commit()
 
+
     out = jsonpickle.decode(cs.compute_balance_with_upperbound_dates(1, upper_bound_symbol_rates_date="2030-01-01",
                                                                      upper_bound_transaction_date="2020-08-01"))
     assert (len(out.transactions) == 4)

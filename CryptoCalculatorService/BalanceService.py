@@ -37,7 +37,6 @@ class BalanceService:
 
     def compute_balance_with_upperbound_dates(self, user_id, upper_bound_symbol_rates_date,
                                               upper_bound_transaction_date):
-        now = datetime.today().strftime(DATE_FORMAT)
         preferred_currency = self.users_repo.get_user_settings(user_id)
         if preferred_currency is None:
             preferred_currency = DEFAULT_CURRENCY
