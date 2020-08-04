@@ -52,8 +52,8 @@ def test_bc_create_1_item():
 
     out = bc.compute(1, dt_now)
     assert (len(out.user_grouped_symbol_values.items()) == 1)
-    assert (out.user_grouped_symbol_values[0].user_symbol_values[0].converted_value == 10 * 8101.799293468747)
-    assert (out.user_grouped_symbol_values[0].user_symbol_values[0].date_time_calculated == dt_now)
+    assert (out.user_grouped_symbol_values['BTC'].user_symbol_values[0].converted_value == 10 * 8101.799293468747)
+    assert (out.user_grouped_symbol_values['BTC'].user_symbol_values[0].date_time_calculated == dt_now)
 
 
 def test_bc_create_2_items():
@@ -88,8 +88,8 @@ def test_bc_create_2_items():
 
     tsv =  bc.compute(user_id=1, date= dt_now)
     assert (len(tsv.user_grouped_symbol_values.items()) == 1)
-    assert (tsv.user_grouped_symbol_values[0].volume == 12)
-    assert ( len(tsv.user_grouped_symbol_values[0].user_symbol_values) == 2)
+    assert (tsv.user_grouped_symbol_values['BTC'].volume == 12)
+    assert ( len(tsv.user_grouped_symbol_values['BTC'].user_symbol_values) == 2)
     bc.compute(tsv,"EUR")
     assert (tsv.converted_value == 8101.799293468747 * 12 )
 
@@ -111,7 +111,7 @@ def test_bc_create_ADA_19796():
 
     dt = datetime(year=2020, month=7, day =13 )
     trans_repo.add_transaction(1,volume=19796,symbol="ADA", value=69, price=1,currency="EUR",date="2020-07-13",source="kraken",
-                            source_id=None, transaction_type="BUY", order_type="TRADE"
+                            source_id=None, transaction_type="TRADE", order_type="BUY"
                             )
     trans_repo.commit()
 
@@ -124,12 +124,12 @@ def test_bc_create_ADA_19796():
     sr = bc.symbol_rates["BTC"]
 
     tsv =  bc.compute(1, dt_now)
-    assert(bc.symbol_rates['ADA'].price == 0.08672453072885744  )
+    assert(bc.symbol_rates['ADA'].price == 0.08410447380210428 )
     assert (len(tsv.user_grouped_symbol_values) == 1)
-    assert (tsv.user_grouped_symbol_values[0].volume == 19796)
-    assert ( len(tsv.user_grouped_symbol_values[0].user_symbol_values) == 1)
+    assert (tsv.user_grouped_symbol_values['ADA'].volume == 19796)
+    assert ( len(tsv.user_grouped_symbol_values['ADA'].user_symbol_values) == 1)
     bc.compute(tsv,"EUR")
-    assert (tsv.converted_value == 19796 * 0.08672453072885744  )
+    assert (tsv.converted_value == 19796 * 0.08410447380210428  )
 
 
 def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
@@ -141,26 +141,22 @@ def test_fetch_latest_exchange_rates_to_date_returns_latest_record():
 
     user_transaction.objects.all().delete()
     delete_prices()
-    insert_prices_record()#0.08410447380210428
+    insert_prices_record()#0.08410447380210428 later timestamp is higher
     insert_prices_2020706_record()#0.08672453072885744
     symbols = rates_repo.fetch_symbol_rates()
-
     dt = date(month=7,day=13,year=2020)
     trans_repo.add_transaction(1, volume=19796, symbol="ADA", value=69, price=1, currency="EUR", date=dt,
                             source="kraken", source_id=None, transaction_type="TRADE", order_type="BUY")
     trans_repo.commit()
     dt_now = datetime.today().strftime(DATE_FORMAT)
-
     transactions = trans_repo.get_transactions(1)
     assert (len(transactions) == 1)
     symbols = rates_repo.fetch_symbol_rates()
     dt_now = convert_to_int_timestamp(datetime.today())
-
     ers = rates_repo.fetch_latest_exchange_rates_to_date(dt_now)
-    bc = BalanceCalculator(transactions, symbols.rates, ers, "EUR", upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
-    # should return 2020706 = 0.08672453072885744
-
-    assert (bc.symbol_rates['ADA'].price == 0.08672453072885744)
+    bc = BalanceCalculator(transactions, symbols.rates, ers, "EUR",
+                           upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
+    assert (bc.symbol_rates['ADA'].price == 0.08410447380210428)
 
 
 

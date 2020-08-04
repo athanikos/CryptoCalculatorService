@@ -32,17 +32,14 @@ def test_fetch_symbol_rates_for_dat_with_two_entries_within_two_hours():
     dt_now = datetime.today().strftime(DATE_FORMAT)
     user_transaction.objects.all().delete()
     prices.objects.all().delete()
-
-
     insert_exchange_record()
     insert_prices_record_with_method(get_prices20200812039_record)
     insert_prices_record_with_method(get_prices20200801T2139_record)
-    rts = rates_repo.fetch_symbol_rates_for_date(   convert_to_int_timestamp(datetime.today())   )
-
+    rts = rates_repo.fetch_symbol_rates_for_date( convert_to_int_timestamp(datetime.today()))
                                                                         # 1596314291000        2020/08/01 20:38
                                                                         # 1596315611000        2020/08/01 21:00
-    dt = datetime(year=2020, month=8 , day=1, hour=21, minute=0 )
-    rts =      rates_repo.fetch_symbol_rates_for_date(dt)
+    dt = datetime(year=2020, month=8 , day=1, hour=21, minute=0 ) #1596315600
+    rts =  rates_repo.fetch_symbol_rates_for_date(convert_to_int_timestamp(dt))
     assert(rts.rates['BTC'].last_updated =='2013-04-28T00:00:00.000Z' )
 
 
