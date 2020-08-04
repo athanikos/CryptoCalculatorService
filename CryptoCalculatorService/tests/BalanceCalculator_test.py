@@ -4,6 +4,8 @@ from cryptodataaccess.Rates.RatesMongoStore import RatesMongoStore
 from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
 from cryptodataaccess.Users import UsersMongoStore
 from cryptomodel.fixer import exchange_rates
+from cryptomodel.order_types import ORDER_TYPES
+from cryptomodel.transaction_types import TRANSACTION_TYPES
 from tests.helpers import insert_prices_record, \
     insert_prices_2020706_record, delete_prices
 from cryptomodel.cryptostore import user_transaction
@@ -25,27 +27,21 @@ def test_bc_create_1_item():
     trans_repo = TransactionRepository(store)
     users_store = RatesMongoStore(config, mock_log)
     rates_repo = RatesRepository(users_store)
-
     do_connect(config)
-
-
-
     user_transaction.objects.all().delete()
     delete_prices()
     insert_exchange_record()
     insert_prices_record()
     dt = date(year=2020,month=1, day =1)
-
     trans_repo.add_transaction(1,volume=10,symbol="BTC", value=2, price=1,currency="EUR",date=dt,source="kraken",
-                            source_id=None, transaction_type="BUY", order_type="TRADE"
-                            )
+                            source_id=None, transaction_type=TRANSACTION_TYPES.TRADE.name, order_type=ORDER_TYPES.BUY.name)
     trans_repo.commit()
     transactions = trans_repo.get_transactions(1)
     symbols = rates_repo.fetch_symbol_rates()
     dt_now =  convert_to_int_timestamp(datetime.today())
     ers = rates_repo.fetch_latest_exchange_rates_to_date(dt_now)
-
-    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR",upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
+    bc = BalanceCalculator(transactions, symbols.rates, ers,"EUR",
+                           upper_bound_transaction_date=dt_now, upper_bound_symbol_rates_date=dt_now)
     sr = bc.symbol_rates["BTC"]
     assert (sr.price == 8101.799293468747)
     assert (sr.volume_24h == 13467618568.254385)
