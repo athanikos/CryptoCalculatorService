@@ -1,6 +1,6 @@
 
 
-[![CircleCI](https://circleci.com/gh/athanikos/CryptoCalculatorService.svg?style=shield&circle-token=a7ee6cc5bd4367ac7d9c05ad2a5427d8068705c5)](<LINK>)
+[![CircleCI](https://circleci.com/gh/athanikos/CryptoCalculatorService.svg?style=shield&circle-token=a7ee6cc5bd4367ac7d9c05ad2a5427d8068705c5)](https://app.circleci.com/pipelines/github/athanikos/CryptoCalculatorService)
 
 
 

@@ -1,2 +1,2 @@
 [run]
-omit = CryptoCalculatorService/tests
+omit =CryptoCalculatorService/tests/*
