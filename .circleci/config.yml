@@ -49,4 +49,4 @@ jobs:
           name: Code coverage
           command: |
              . venv/bin/activate
-             py.test --cov=CryptoCalculatorService --omit=CryptoCalculatorService/tests
+             py.test --cov=CryptoCalculatorService --ignore-glob='*test'.
