@@ -5,7 +5,7 @@ from CryptoCalculatorService.config import configure_app
 import pytest
 import mock
 
-BASE_PATH = 'CryptoCalculatorService/tests/'
+BASE_PATH = ''
 
 
 def get_exchange_rates_record():
