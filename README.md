@@ -1,3 +1,11 @@
+
+
+[![CircleCI](https://circleci.com/gh/athanikos/CryptoCalculatorService.svg?style=shield&circle-token=a7ee6cc5bd4367ac7d9c05ad2a5427d8068705c5)](<LINK>)
+
+
+
+
+
 ### Crypto Calculator Service
 1. Calculates balance based on transactions and symbol prices per date (BalanceService)
 2. Calculates symbol price per date  (PricesService)
