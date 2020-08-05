@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Runnning tests
           command: |
+            cd CryptoCalculatorService/tests
             . venv/bin/activate
             py.test -vv CryptoCalculatorService/tests
       - run:
