@@ -28,8 +28,6 @@ def test_fetch_symbol_rates_for_dat_with_two_entries_within_two_hours():
     rts = rates_repo.fetch_symbol_rates_for_date( convert_to_int_timestamp(datetime.today()))
                                                                         # 1596314291000        2020/08/01 20:38
                                                                         # 1596315611000        2020/08/01 21:00
-    dt1 = convert_to_int_timestamp(datetime(year=2020, month=8, day=1, hour=20, minute=39))  # 1596315600000
-    dt2 = convert_to_int_timestamp(datetime(year=2020, month=8, day=1, hour=21, minute=39))  # 1596315600000
 
 
     dt = datetime(year=2020, month=8 , day=1, hour=21, minute=0 ) #1596315600000

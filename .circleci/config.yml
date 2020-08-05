@@ -44,9 +44,9 @@ jobs:
           name: Runnning tests
           command: |
             . venv/bin/activate
-            py.test -vv CryptoCalculatorService/tests
+             cd CryptoCalculatorService/tests && py.test -vv CryptoCalculatorService/tests
       - run:
           name: Code coverage
           command: |
              . venv/bin/activate
-             py.test --cov=CryptoCalculatorService
+             cd CryptoCalculatorService/tests && py.test --cov=CryptoCalculatorService
