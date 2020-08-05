@@ -13,7 +13,7 @@ from cryptomodel.cryptostore import user_transaction, user_settings
 
 from CryptoCalculatorService.BalanceService import BalanceService
 from CryptoCalculatorService.config import config, configure_app
-from CryptoCalculatorService.tests.apsscedhuler_test import mock_log
+from CryptoCalculatorService.tests.Scedhuler_test import mock_log
 from CryptoCalculatorService.tests.helpers import insert_prices_record, insert_exchange_record, \
     insert_prices_2020731_record
 

@@ -7,7 +7,7 @@ from cryptodataaccess.helpers import do_connect
 from cryptomodel.cryptomodel import exchange_rates, prices
 from cryptomodel.cryptostore import user_transaction, user_settings
 from CryptoCalculatorService.config import config, configure_app
-from CryptoCalculatorService.tests.apsscedhuler_test import mock_log
+from CryptoCalculatorService.tests.Scedhuler_test import mock_log
 from CryptoCalculatorService.tests.helpers import insert_prices_record, insert_exchange_record, \
     insert_prices_record_with_method, get_prices20200812039_record, \
     get_prices20200801T2139_record
