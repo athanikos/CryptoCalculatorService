@@ -38,8 +38,12 @@ def test_fetch_symbol_rates_for_dat_with_two_entries_within_two_hours():
     rts = rates_repo.fetch_symbol_rates_for_date( convert_to_int_timestamp(datetime.today()))
                                                                         # 1596314291000        2020/08/01 20:38
                                                                         # 1596315611000        2020/08/01 21:00
-    dt = datetime(year=2020, month=8 , day=1, hour=21, minute=0 ) #1596315600
+    dt1 = convert_to_int_timestamp(datetime(year=2020, month=8, day=1, hour=20, minute=39))  # 1596315600000
+    dt2 = convert_to_int_timestamp(datetime(year=2020, month=8, day=1, hour=21, minute=39))  # 1596315600000
+
+
+    dt = datetime(year=2020, month=8 , day=1, hour=21, minute=0 ) #1596315600000
     rts =  rates_repo.fetch_symbol_rates_for_date(convert_to_int_timestamp(dt))
-    assert(rts.rates['BTC'].last_updated =='2013-04-28T00:00:00.000Z' )
+    assert(rts.rates['BTC'].last_updated =='2020-08-01T20:38:00.000Z' )
 
 
