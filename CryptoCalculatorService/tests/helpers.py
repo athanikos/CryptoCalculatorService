@@ -29,12 +29,12 @@ def get_prices_2020731_record():
 
 
 def get_prices20200812039_record():
-    with open(BASE_PATH + 'sample_records/prices2020-08-01T20:39.json', 'r') as my_file:
+    with open(BASE_PATH + 'sample_records/prices_2038.json', 'r') as my_file:
         return json.load(my_file)
 
 
 def get_prices20200801T2139_record():
-    with open(BASE_PATH + 'sample_records/prices2020-08-01T21:39.json', 'r') as my_file:
+    with open(BASE_PATH + 'sample_records/prices2039.json', 'r') as my_file:
         return json.load(my_file)
 
 
