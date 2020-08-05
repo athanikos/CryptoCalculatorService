@@ -86,7 +86,7 @@ class Scedhuler():
                                auto_offset_reset='largest',
                                consumer_timeout_ms=10000
                                )
-        self.delete_and_insert_transactions(self, transactions)
+        self.delete_and_insert_transactions(transactions)
 
         notifications = consume(topic=self.trans_store.configuration.USER_NOTIFICATIONS_TOPIC_NAME,
                                 broker_names=self.trans_store.configuration.KAFKA_BROKERS,
@@ -100,7 +100,7 @@ class Scedhuler():
     def delete_and_insert_notifications(self, notifications):
         for notification in notifications:
             un = jsonpickle.decode(notification, keys=False)
-            self.users_repo.delete_user_notification_by_source_id(source_id=un.id, throw_if_does_not_exist=False)
+            self.users_repo.remove_notification(source_id=un.id, throw_if_does_not_exist=False)
             if un.operation == OPERATIONS.ADDED.name or un.operation == OPERATIONS.MODIFIED.name:
                 self.users_repo.add_notification(user_id=un.user_id, user_name=un.user_name,
                                                user_email=un.user_email,

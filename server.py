@@ -12,12 +12,13 @@ from CryptoCalculatorService.scedhuler.Scedhuler import Scedhuler
 bp = Blueprint(__name__.split('.')[0], __name__.split('.')[0])
 bs = BalanceService(configure_app())
 ps = PricesService(configure_app())
-sced = Scedhuler(configure_app())
+scedhuler = Scedhuler(configure_app())
+
 
 def create_app():
     the_app = Flask(__name__.split('.')[0], instance_relative_config=True)
     the_app.register_blueprint(bp)
-    sced.start(bs)
+    scedhuler.start()
     return the_app
 
 
@@ -50,7 +51,7 @@ def handle_error(error):
 
 
 # Shut down the scedhuler when exiting the app
-atexit.register(lambda:sced.stop())
+atexit.register(lambda: scedhuler.stop())
 
 if __name__ == '__main__':
     create_app().run()
