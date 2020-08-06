@@ -107,7 +107,6 @@ class Scedhuler():
             for notification in notifications:
                 un = jsonpickle.decode(notification, keys=False)
                 log_info('iterate notifications : ' + str(un.id),self.trans_store.configuration )
-
                 self.users_repo.remove_notification_by_source_id(source_id=un.id)
                 if un.operation == OPERATIONS.ADDED.name or un.operation == OPERATIONS.MODIFIED.name:
                     log_info(' self.users_repo.add_notification : ' + str(un.id),self.trans_store.configuration)
