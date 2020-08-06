@@ -4,8 +4,9 @@ from datetime import datetime
 import jsonpickle
 import mock
 from bson import ObjectId
+from cryptodataaccess.Users.UsersMongoStore import UsersMongoStore
 from cryptodataaccess.Users.UsersRepository import UsersRepository
-from cryptomodel.cryptostore import user_transaction
+from cryptomodel.cryptostore import user_transaction, user_notification
 from cryptomodel.operations import OPERATIONS
 
 from server import configure_app, create_app
@@ -18,6 +19,7 @@ from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongo
 from cryptodataaccess.helpers import do_connect, log_error
 from CryptoCalculatorService.BalanceService import BalanceService, PROJECT_NAME
 from CryptoCalculatorService.scedhuler.Scedhuler import Scedhuler
+from cryptodataaccess.Memory import  USER_NOTIFICATIONS_MEMORY_KEY
 
 @pytest.fixture
 def test_client():
@@ -69,3 +71,37 @@ def test_syncronize_transactions():
     s.delete_and_insert_transactions(transactions)
     uts2 = repo.get_transactions(1)
     assert (len(uts2) == 1)
+
+
+def test_syncronize_notifications():
+    cfg = configure_app()
+    do_connect(cfg)
+    config = configure_app()
+    store = UsersMongoStore(config, mock_log)
+    repo = UsersRepository(store)
+    do_connect(config)
+    user_notification.objects.all().delete()
+
+    un = user_notification()
+    un.source_id = ObjectId('666f6f2d6261722d71757578')
+    un.id = ObjectId('666f6f2d6261722d71757578')
+    un.operation = OPERATIONS.ADDED.name
+    un.channel_type ="tele"
+    un.check_every_seconds = 1
+    un.check_times = 3
+    nots = [jsonpickle.encode(un)]
+    s =Scedhuler(config)
+    s.delete_and_insert_notifications(nots)
+    uts2 = repo.get_notifications(1)
+    assert (len(uts2) == 1)
+
+
+def test_create_Users_Repo():
+    cfg = configure_app()
+    do_connect(cfg)
+    config = configure_app()
+    store = UsersMongoStore(config, mock_log)
+    repo = UsersRepository(store)
+    assert (repo.memories[USER_NOTIFICATIONS_MEMORY_KEY] is not None )
+
+

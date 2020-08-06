@@ -3,7 +3,7 @@ import atexit
 import pymongo
 from flask import Flask, jsonify, request
 from flask.blueprints import Blueprint
-
+import logging
 from CryptoCalculatorService.BalanceService import BalanceService
 from CryptoCalculatorService.PricesService import PricesService
 from CryptoCalculatorService.config import configure_app
@@ -17,6 +17,13 @@ scedhuler = Scedhuler(configure_app())
 
 def create_app():
     the_app = Flask(__name__.split('.')[0], instance_relative_config=True)
+
+    logger = logging.getLogger('werkzeug')
+    handler = logging.FileHandler('access.log')
+    the_app.logger.addHandler(handler)
+
+    the_app.logger.info("TEST")
+
     the_app.register_blueprint(bp)
     scedhuler.start()
     return the_app

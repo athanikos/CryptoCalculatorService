@@ -19,7 +19,7 @@ class BaseConfig(object):
     DATABASE = DB
     USERNAME = ""
     PASSWORD = ""
-    LOGS_PATH = '../CryptoCalculatorService/logs/CryptoModel.log'
+    LOGS_PATH = 'CryptoCalculatorService/logs/CryptoModel.log'
     KAFKA_BROKERS = KAFKA_BROKERS
     TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
     USER_NOTIFICATIONS_TOPIC_NAME = USER_NOTIFICATIONS_TOPIC_NAME
@@ -33,7 +33,7 @@ class DevelopmentConfig(BaseConfig):
     DATABASE = DB
     USERNAME = "admin"
     PASSWORD = "admin"
-    LOGS_PATH = '../CryptoCalculatorService/logs/CryptoModel.log'
+    LOGS_PATH = 'CryptoCalculatorService/logs/CryptoModel.log'
     KAFKA_BROKERS = KAFKA_BROKERS
     TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
     USER_NOTIFICATIONS_TOPIC_NAME = USER_NOTIFICATIONS_TOPIC_NAME
@@ -47,7 +47,7 @@ class ProductionConfig(BaseConfig):
     DATABASE = DB
     USERNAME = ""
     PASSWORD = ""
-    LOGS_PATH = '../CryptoCalculatorService/logs/CryptoUsersService.log'
+    LOGS_PATH = 'CryptoCalculatorService/logs/CryptoModel.log'
     KAFKA_BROKERS = KAFKA_BROKERS
     TRANSACTIONS_TOPIC_NAME = TRANSACTIONS_TOPIC_NAME
     USER_NOTIFICATIONS_TOPIC_NAME = USER_NOTIFICATIONS_TOPIC_NAME

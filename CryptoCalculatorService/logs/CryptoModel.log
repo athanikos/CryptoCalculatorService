@@ -1,0 +1,22 @@
+ERROR:root:delete_and_insert_notifications
+ERROR:root:iterate notifications : 5f2af0b35aad84a3f290f60b
+ERROR:root: self.users_repo.add_notification : 5f2af0b35aad84a3f290f60b
+ERROR:apscheduler.executors.default:Job "Scedhuler.synchronize_transactions_and_user_notifications (trigger: cron[second='*/5'], next run at: 2020-08-05 17:53:25 UTC)" raised an exception
+Traceback (most recent call last):
+  File "/home/nikos/PycharmProjects/CryptoCalculatorService/venv/lib/python3.7/site-packages/apscheduler/executors/base.py", line 125, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+  File "/home/nikos/PycharmProjects/CryptoCalculatorService/CryptoCalculatorService/scedhuler/Scedhuler.py", line 101, in synchronize_transactions_and_user_notifications
+    self.delete_and_insert_notifications(notifications)
+  File "/home/nikos/PycharmProjects/CryptoCalculatorService/CryptoCalculatorService/scedhuler/Scedhuler.py", line 125, in delete_and_insert_notifications
+    self.users_repo.commit()
+  File "/home/nikos/PycharmProjects/CryptoCalculatorService/venv/lib/python3.7/site-packages/cryptodataaccess/Repository.py", line 11, in commit
+    for item in mem.items:
+AttributeError: 'NoneType' object has no attribute 'items'
+INFO:apscheduler.scheduler:Scheduler has been shut down
+ERROR:root:delete_and_insert_notifications
+ERROR:root:exiting delete_and_insert_notifications
+ERROR:root:sleeping 
+WARNING:apscheduler.scheduler:Execution of job "Scedhuler.synchronize_transactions_and_user_notifications (trigger: cron[second='*/5'], next run at: 2020-08-05 17:53:50 UTC)" skipped: maximum number of running instances reached (1)
+WARNING:apscheduler.scheduler:Execution of job "Scedhuler.synchronize_transactions_and_user_notifications (trigger: cron[second='*/5'], next run at: 2020-08-05 17:53:55 UTC)" skipped: maximum number of running instances reached (1)
+WARNING:apscheduler.scheduler:Execution of job "Scedhuler.synchronize_transactions_and_user_notifications (trigger: cron[second='*/5'], next run at: 2020-08-05 17:54:00 UTC)" skipped: maximum number of running instances reached (1)
+WARNING:apscheduler.scheduler:Execution of job "Scedhuler.synchronize_transactions_and_user_notifications (trigger: cron[second='*/5'], next run at: 2020-08-05 17:54:05 UTC)" skipped: maximum number of running instances reached (1)
