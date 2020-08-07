@@ -1,12 +1,30 @@
 import json
 import pymongo
-from cryptodataaccess.helpers import get_url
+from cryptodataaccess.TransactionRepository import TransactionRepository
+from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
+from cryptodataaccess.Users.UsersMongoStore import UsersMongoStore
+from cryptodataaccess.UsersRepository import UsersRepository
+from cryptodataaccess.helpers import get_url, do_connect
+from cryptomodel.cryptomodel import user_notification
+
 from CryptoCalculatorService.config import configure_app
 import pytest
 import mock
 
 BASE_PATH = 'CryptoCalculatorService/tests/'
 
+def setup_repos_and_clear_data():
+    cfg = configure_app()
+    do_connect(cfg)
+    config = configure_app()
+    users_store = UsersMongoStore(config, mock_log)
+    users_repo = UsersRepository(users_store)
+
+    trans_store = TransactionMongoStore(config, mock_log)
+    trans_repo = TransactionRepository(trans_store)
+    do_connect(config)
+    user_notification.objects.all().delete()
+    return config, users_repo, trans_repo
 
 def get_exchange_rates_record():
     with open(BASE_PATH + 'sample_records/exchange_rate.json', 'r') as my_file:

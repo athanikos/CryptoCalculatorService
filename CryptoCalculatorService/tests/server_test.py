@@ -1,11 +1,8 @@
 import pytest
-import json
-from bson import ObjectId
-from cryptomodel.operations import OPERATIONS
 
+from CryptoCalculatorService.scedhuler.Scedhuler import Scedhuler
+from CryptoCalculatorService.tests.helpers import setup_repos_and_clear_data
 from server import configure_app, create_app
-from cryptodataaccess.helpers import do_connect, log_error
-from cryptomodel.cryptostore import user_transaction
 
 
 @pytest.fixture(scope='module')
@@ -18,3 +15,9 @@ def test_client():
     ctx.pop()
 
 
+def test_scedhuler_consumes(test_client):
+    config, users_repo, trans_repo = setup_repos_and_clear_data()
+
+    s = Scedhuler()
+    s.synchronize_transactions_and_user_notifications()
+    assert(1==1)

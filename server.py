@@ -12,7 +12,7 @@ from CryptoCalculatorService.scedhuler.Scedhuler import Scedhuler
 bp = Blueprint(__name__.split('.')[0], __name__.split('.')[0])
 bs = BalanceService(configure_app())
 ps = PricesService(configure_app())
-scedhuler = Scedhuler(configure_app())
+scedhuler = Scedhuler(configure_app(), run_forever=False, consumer_time_out=100000)
 
 
 def create_app():
@@ -21,9 +21,6 @@ def create_app():
     logger = logging.getLogger('werkzeug')
     handler = logging.FileHandler('access.log')
     the_app.logger.addHandler(handler)
-
-    the_app.logger.info("TEST")
-
     the_app.register_blueprint(bp)
     scedhuler.start()
     return the_app

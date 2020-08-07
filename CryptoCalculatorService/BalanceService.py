@@ -1,20 +1,14 @@
 from datetime import datetime
-
 from cryptodataaccess.helpers import convert_to_int_timestamp
-from cryptomodel.operations import OPERATIONS
-from flask import jsonify
 from calculator.BalanceCalculator import BalanceCalculator
 from cryptodataaccess.Users.UsersRepository import UsersRepository
 from cryptodataaccess.Rates.RatesRepository import RatesRepository
 from cryptodataaccess.Transactions.TransactionRepository import TransactionRepository
-
 from cryptodataaccess.Users.UsersMongoStore import UsersMongoStore
 from cryptodataaccess.Rates.RatesMongoStore import RatesMongoStore
 from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
-
 import jsonpickle
 from CryptoCalculatorService.helpers import log_error
-from kafkaHelper.kafkaHelper import consume, produce
 
 DEFAULT_CURRENCY = "EUR"
 DATE_FORMAT = "%Y-%m-%d"

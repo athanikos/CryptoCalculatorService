@@ -18,7 +18,6 @@ from apscheduler.jobstores.mongodb import MongoDBJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from CryptoCalculatorService.helpers import log_error, log_info
 from CryptoCalculatorService.BalanceService import DEFAULT_CURRENCY, DATE_FORMAT, PROJECT_NAME, BalanceService
-import time
 
 jobstores = {
     'mongo': MongoDBJobStore()
@@ -52,7 +51,8 @@ class Scedhuler():
         self.ran_once = False
 
     def start(self):
-        self.bs.add_job(self.synchronize_transactions_and_user_notifications, 'cron', second='*/5')
+        self.bs.remove_all_jobs()
+        self.bs.add_job(self.synchronize_transactions_and_user_notifications, 'cron', second='*/30')
         try:
             self.bs.start()
         except SchedulerAlreadyRunningError:
@@ -81,16 +81,14 @@ class Scedhuler():
         return trans
 
     def synchronize_transactions_and_user_notifications(self):
-        if self.ran_once == False or self.run_forever:
+        while self.ran_once == False or self.run_forever:
             try:
-                transactions = self.consume_transactions()
-                self.delete_and_insert_transactions(transactions)
+                self.delete_and_insert_transactions(self.consume_transactions())
             except Exception as e:
                 log_error(e, self.users_store.configuration)
 
             try:
-                notifications = self.consume_notifications()
-                self.delete_and_insert_notifications(notifications)
+                self.delete_and_insert_notifications(self.consume_notifications())
             except Exception as e:
                 log_error(e, self.users_store.configuration)
 
@@ -110,7 +108,7 @@ class Scedhuler():
         notifications = consume(topic=self.trans_store.configuration.USER_NOTIFICATIONS_TOPIC_NAME,
                                 broker_names=self.trans_store.configuration.KAFKA_BROKERS,
                                 consumer_group=PROJECT_NAME,
-                                auto_offset_reset='largest',
+                                auto_offset_reset='earliest',
                                 consumer_timeout_ms=self.consumer_time_out
                                 )
         return notifications
@@ -118,6 +116,8 @@ class Scedhuler():
     def delete_and_insert_notifications(self, notifications):
 
         log_info('delete_and_insert_notifications', self.trans_store.configuration)
+
+        log_info(  str(len(notifications))  , self.trans_store.configuration)
 
         for notification in notifications:
             un = jsonpickle.decode(notification, keys=False)

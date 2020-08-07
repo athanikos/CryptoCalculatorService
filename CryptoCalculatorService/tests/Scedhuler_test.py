@@ -9,6 +9,7 @@ from cryptodataaccess.Users.UsersRepository import UsersRepository
 from cryptomodel.cryptostore import user_transaction, user_notification
 from cryptomodel.operations import OPERATIONS
 
+from CryptoCalculatorService.tests.helpers import setup_repos_and_clear_data
 from server import configure_app, create_app
 import pytest
 from kafkaHelper.kafkaHelper import produce, consume
@@ -90,18 +91,6 @@ def test_syncronize_notifications():
     assert (len(uts2) == 1)
 
 
-def setup_repos_and_clear_data():
-    cfg = configure_app()
-    do_connect(cfg)
-    config = configure_app()
-    users_store = UsersMongoStore(config, mock_log)
-    users_repo = UsersRepository(users_store)
-
-    trans_store = TransactionMongoStore(config, mock_log)
-    trans_repo = TransactionRepository(trans_store)
-    do_connect(config)
-    user_notification.objects.all().delete()
-    return config, users_repo, trans_repo
 
 
 def test_create_Users_Repo():
