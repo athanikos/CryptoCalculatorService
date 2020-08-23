@@ -69,6 +69,7 @@ def test_syncronize_transactions():
 
     transactions = [jsonpickle.encode(ut2)]
     s = Scedhuler(config)
+    s.run_forever = False
     s.delete_and_insert_transactions(transactions)
     uts2 = repo.get_transactions(1)
     assert (len(uts2) == 1)

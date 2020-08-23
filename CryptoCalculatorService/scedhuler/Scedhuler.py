@@ -35,7 +35,7 @@ job_defaults = {
 
 class Scedhuler():
 
-    def __init__(self, config, run_forever=True, consumer_time_out=1000):
+    def __init__(self, config, run_forever=True, consumer_time_out=5000):
         self.rates_store = RatesMongoStore(config, log_error)
         self.users_store = UsersMongoStore(config, log_error)
         self.trans_store = TransactionMongoStore(config, log_error)
@@ -52,7 +52,7 @@ class Scedhuler():
 
     def start(self):
         self.bs.remove_all_jobs()
-        self.bs.add_job(self.synchronize_transactions_and_user_notifications, 'cron', second='*/30')
+        self.bs.add_job(self.synchronize_transactions_and_user_notifications, 'cron', second='*/8')
         try:
             self.bs.start()
         except SchedulerAlreadyRunningError:
@@ -117,7 +117,7 @@ class Scedhuler():
 
         log_info('delete_and_insert_notifications', self.trans_store.configuration)
 
-        log_info(  str(len(notifications))  , self.trans_store.configuration)
+        log_info(str(len(notifications)), self.trans_store.configuration)
 
         for notification in notifications:
             un = jsonpickle.decode(notification, keys=False)

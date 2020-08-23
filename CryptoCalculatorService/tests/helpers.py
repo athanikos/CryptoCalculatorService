@@ -1,9 +1,9 @@
 import json
 import pymongo
-from cryptodataaccess.TransactionRepository import TransactionRepository
+from cryptodataaccess.Transactions.TransactionRepository import TransactionRepository
 from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
 from cryptodataaccess.Users.UsersMongoStore import UsersMongoStore
-from cryptodataaccess.UsersRepository import UsersRepository
+from cryptodataaccess.Users.UsersRepository import UsersRepository
 from cryptodataaccess.helpers import get_url, do_connect
 from cryptomodel.cryptomodel import user_notification
 

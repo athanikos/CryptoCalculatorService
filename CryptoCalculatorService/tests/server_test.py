@@ -14,10 +14,3 @@ def test_client():
     yield testing_client  # this is where the testing happens!
     ctx.pop()
 
-
-def test_scedhuler_consumes(test_client):
-    config, users_repo, trans_repo = setup_repos_and_clear_data()
-
-    s = Scedhuler()
-    s.synchronize_transactions_and_user_notifications()
-    assert(1==1)
