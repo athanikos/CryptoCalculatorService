@@ -7,7 +7,7 @@ import logging
 from CryptoCalculatorService.BalanceService import BalanceService
 from CryptoCalculatorService.PricesService import PricesService
 from CryptoCalculatorService.config import configure_app
-from CryptoCalculatorService.scedhuler.Scedhuler import Scedhuler
+from CryptoCalculatorService.scheduler.Scedhuler import Scedhuler
 
 bp = Blueprint(__name__.split('.')[0], __name__.split('.')[0])
 bs = BalanceService(configure_app())
@@ -54,7 +54,7 @@ def handle_error(error):
     return jsonify(response), status_code
 
 
-# Shut down the scedhuler when exiting the app
+# Shut down the scheduler when exiting the app
 atexit.register(lambda: scedhuler.stop())
 
 if __name__ == '__main__':

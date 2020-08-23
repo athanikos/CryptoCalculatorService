@@ -1,6 +1,6 @@
 import pytest
 
-from CryptoCalculatorService.scedhuler.Scedhuler import Scedhuler
+from CryptoCalculatorService.scheduler.Scedhuler import Scedhuler
 from CryptoCalculatorService.tests.helpers import setup_repos_and_clear_data
 from server import configure_app, create_app
 
@@ -14,6 +14,7 @@ def test_client():
     yield testing_client  # this is where the testing happens!
     ctx.pop()
 
+#todo runs forever fix (remove pytest.fixture)
 @pytest.fixture
 def test_scedhuler_consumes(test_client):
     config, users_repo, trans_repo = setup_repos_and_clear_data()

@@ -52,7 +52,7 @@ class Scedhuler():
 
     def start(self):
         self.bs.remove_all_jobs()
-        self.bs.add_job(self.synchronize_transactions_and_user_notifications, 'cron', second='*/8')
+        self.bs.add_job(self.synchronize_transactions_and_user_notifications, 'cron', second='*/59')
         try:
             self.bs.start()
         except SchedulerAlreadyRunningError:
@@ -114,30 +114,22 @@ class Scedhuler():
         return notifications
 
     def delete_and_insert_notifications(self, notifications):
-
-        log_info('delete_and_insert_notifications', self.trans_store.configuration)
-
-        log_info(str(len(notifications)), self.trans_store.configuration)
-
         for notification in notifications:
             un = jsonpickle.decode(notification, keys=False)
-            log_info('iterate notifications : ' + str(un.id), self.trans_store.configuration)
             self.users_repo.remove_notification_by_source_id(source_id=un.id)
             if un.operation == OPERATIONS.ADDED.name or un.operation == OPERATIONS.MODIFIED.name:
-                log_info(' self.users_repo.add_notification : ' + str(un.id), self.trans_store.configuration)
                 self.users_repo.add_notification(user_id=un.user_id, user_name=un.user_name,
                                                  user_email=un.user_email,
-                                                 expression_to_evaluate=un.expression_to_evaluate,
-                                                 check_every_seconds=un.check_every_seconds,
-                                                 check_times=un.check_times,
+                                                 threshold_value=un.threshold_value,
+                                                 check_every=un.check_every,
+                                                 start_date=un.start_date,
+                                                 end_date=un.end_date,
                                                  is_active=un.is_active,
                                                  channel_type=un.channel_type,
-                                                 fields_to_send=un.fields_to_send,
+                                                 notification_type=un.notification_type,
                                                  source_id=un.source_id)
 
                 self.users_repo.commit()
-                log_info(' self.users_repo.commit() ', self.trans_store.configuration)
-        log_info('exiting delete_and_insert_notifications', self.trans_store.configuration)
 
     def delete_and_insert_transactions(self, transactions):
         for i in transactions:

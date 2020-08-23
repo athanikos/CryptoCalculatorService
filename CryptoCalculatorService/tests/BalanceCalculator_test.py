@@ -1,12 +1,9 @@
 from datetime import date, datetime
-
 from cryptodataaccess.Rates.RatesMongoStore import RatesMongoStore
 from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
 from cryptomodel.order_types import ORDER_TYPES
 from cryptomodel.transaction_types import TRANSACTION_TYPES
-
 from CryptoCalculatorService.tests.helpers import  insert_prices_record, delete_prices, insert_prices_2020706_record
-
 from cryptomodel.cryptostore import user_transaction
 from calculator.BalanceCalculator import BalanceCalculator
 from cryptodataaccess.Rates.RatesRepository import RatesRepository

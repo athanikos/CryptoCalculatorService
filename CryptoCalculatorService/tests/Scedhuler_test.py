@@ -19,7 +19,7 @@ from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongo
 
 from cryptodataaccess.helpers import do_connect, log_error
 from CryptoCalculatorService.BalanceService import BalanceService, PROJECT_NAME
-from CryptoCalculatorService.scedhuler.Scedhuler import Scedhuler
+from CryptoCalculatorService.scheduler.Scedhuler import Scedhuler
 from cryptodataaccess.Memory import USER_NOTIFICATIONS_MEMORY_KEY
 
 
@@ -82,9 +82,13 @@ def test_syncronize_notifications():
     un.source_id = ObjectId('666f6f2d6261722d71757578')
     un.id = ObjectId('666f6f2d6261722d71757578')
     un.operation = OPERATIONS.ADDED.name
-    un.channel_type = "tele"
-    un.check_every_seconds = 1
+    un.channel_type = "TELEGRAM"
+    un.check_every ="00:00"
+    un.start_date = datetime.now()
+    un.end_date = datetime.now()
+    un.threshold_value = 1
     un.check_times = 3
+    un.notification_type = 'BALANCE'
     nots = [jsonpickle.encode(un)]
     s = Scedhuler(config)
     s.delete_and_insert_notifications(nots)
@@ -108,14 +112,21 @@ def test_produce_to_kafka_inserts_to_mongo():
     un.source_id = ObjectId('666f6f2d6261722d71757578')
     un.id = ObjectId('666f6f2d6261722d71757578')
     un.operation = OPERATIONS.ADDED.name
-    un.channel_type = "tele"
-    un.check_every_seconds = 1
-    un.check_times = 3
+    un.channel_type = "TELEGRAM"
+    un.notification_type = "BALANCE"
+    un.check_every= "00:00"
+    un.start_date = datetime.now()
+    un.end_date = datetime.now()
     config, users_repo, trans_repo = setup_repos_and_clear_data()
 
-    users_repo.add_notification(un.user_id, un.user_name, un.user_email, un.expression_to_evaluate,
-                                un.check_every_seconds, un.check_times,
-                                un.is_active, un.channel_type, un.fields_to_send, un.source_id)
+    users_repo.add_notification(user_id= un.user_id, user_name= un.user_name,user_email= un.user_email,
+                                notification_type=un.notification_type,
+                                check_every = "00:00",
+                                start_date = un.start_date,
+                                end_date = un.end_date,
+                                is_active = un.is_active, channel_type = un.channel_type,
+                                threshold_value = un.threshold_value,
+                                source_id= un.source_id)
     users_repo.commit()
     produce(broker_names=users_repo.users_store.configuration.KAFKA_BROKERS,
             topic=users_repo.users_store.configuration.USER_NOTIFICATIONS_TOPIC_NAME
@@ -136,12 +147,20 @@ def test_on_consume_notifications_throws_exception_should_catch_and_log(mock_log
         un.source_id = ObjectId('666f6f2d6261722d71757578')
         un.id = ObjectId('666f6f2d6261722d71757578')
         un.operation = OPERATIONS.ADDED.name
-        un.channel_type = "tele"
-        un.check_every_seconds = 1
-        un.check_times = 3
-        users_repo.add_notification(un.user_id, un.user_name, un.user_email, un.expression_to_evaluate,
-                                    un.check_every_seconds, un.check_times,
-                                    un.is_active, un.channel_type, un.fields_to_send, un.source_id)
+        un.channel_type = "TELEGRAM"
+        un.check_every = "00:00"
+        un.start_date = datetime.now()
+        un.end_date = datetime.now()
+        un.notification_type = "BALANCE"
+
+        users_repo.add_notification(user_id=un.user_id, user_name=un.user_name, user_email=un.user_email,
+                                    notification_type=un.notification_type,
+                                    check_every = un.check_every,
+                                    start_date = un.start_date,
+                                    end_date = un.end_date,
+                                    is_active=un.is_active, channel_type=un.channel_type,
+                                    threshold_value=un.threshold_value,
+                                    source_id=un.source_id)
         users_repo.commit()
         produce(broker_names=users_repo.users_store.configuration.KAFKA_BROKERS,
                 topic=users_repo.users_store.configuration.USER_NOTIFICATIONS_TOPIC_NAME
