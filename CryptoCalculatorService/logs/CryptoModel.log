@@ -514,3 +514,239 @@ INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 
 INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
 INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
 INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 181
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='transactions', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='transactions', partition=0)} for group CalculatorService
+INFO:kafka.coordinator:Stopping heartbeat thread
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('user_notifications',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 182
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='user_notifications', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='user_notifications', partition=0)} for group CalculatorService
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+WARNING:kafka.coordinator.consumer:Auto offset commit failed for group CalculatorService: NodeNotReadyError: coordinator-0
+INFO:kafka.coordinator:Stopping heartbeat thread
+ERROR:root:delete_and_insert_notifications
+ERROR:root:2
+ERROR:root:iterate notifications : 666f6f2d6261722d71757578
+ERROR:root: self.users_repo.add_notification : 666f6f2d6261722d71757578
+ERROR:root: self.users_repo.commit() 
+ERROR:root:iterate notifications : 666f6f2d6261722d71757578
+ERROR:root: self.users_repo.add_notification : 666f6f2d6261722d71757578
+ERROR:root: self.users_repo.commit() 
+ERROR:root:exiting delete_and_insert_notifications
+ERROR:root:sleeping 
+WARNING:kafka.consumer.group:use auto_offset_reset=latest (largest is deprecated)
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('transactions',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 183
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='transactions', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='transactions', partition=0)} for group CalculatorService
+INFO:kafka.coordinator:Stopping heartbeat thread
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('user_notifications',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 184
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='user_notifications', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='user_notifications', partition=0)} for group CalculatorService
+INFO:kafka.coordinator:Stopping heartbeat thread
+ERROR:root:delete_and_insert_notifications
+ERROR:root:0
+ERROR:root:exiting delete_and_insert_notifications
+ERROR:root:sleeping 
+WARNING:kafka.consumer.group:use auto_offset_reset=latest (largest is deprecated)
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('transactions',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 185
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='transactions', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='transactions', partition=0)} for group CalculatorService
+INFO:kafka.coordinator:Stopping heartbeat thread
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('user_notifications',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 186
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='user_notifications', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='user_notifications', partition=0)} for group CalculatorService
+INFO:kafka.coordinator:Stopping heartbeat thread
+ERROR:root:delete_and_insert_notifications
+ERROR:root:0
+ERROR:root:exiting delete_and_insert_notifications
+ERROR:root:sleeping 
+WARNING:kafka.consumer.group:use auto_offset_reset=latest (largest is deprecated)
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('transactions',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 187
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='transactions', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='transactions', partition=0)} for group CalculatorService
+INFO:kafka.coordinator:Stopping heartbeat thread
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('user_notifications',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 188
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='user_notifications', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='user_notifications', partition=0)} for group CalculatorService
+INFO:kafka.coordinator:Stopping heartbeat thread
+ERROR:root:delete_and_insert_notifications
+ERROR:root:0
+ERROR:root:exiting delete_and_insert_notifications
+ERROR:root:sleeping 
+WARNING:kafka.consumer.group:use auto_offset_reset=latest (largest is deprecated)
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('transactions',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
+INFO:kafka.coordinator:Elected group leader -- performing partition assignments using range
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.coordinator:Successfully joined group CalculatorService with generation 189
+INFO:kafka.consumer.subscription_state:Updated partition assignment: [TopicPartition(topic='transactions', partition=0)]
+INFO:kafka.coordinator.consumer:Setting newly assigned partitions {TopicPartition(topic='transactions', partition=0)} for group CalculatorService
+INFO:kafka.coordinator:Stopping heartbeat thread
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: connecting to localhost:9092 [('127.0.0.1', 9092) IPv4]
+INFO:kafka.conn:Probing node bootstrap-0 broker version
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connecting> [IPv4 ('127.0.0.1', 9092)]>: Connection complete.
+INFO:kafka.conn:Broker version identified as 1.0.0
+INFO:kafka.conn:Set configuration api_version=(1, 0, 0) to skip auto check_version requests on startup
+INFO:kafka.consumer.subscription_state:Updating subscribed topics to: ('user_notifications',)
+INFO:kafka.cluster:Group coordinator for CalculatorService is BrokerMetadata(nodeId='coordinator-0', host='nikos-MS-7A34', port=9092, rack=None)
+INFO:kafka.coordinator:Discovered coordinator coordinator-0 for group CalculatorService
+INFO:kafka.coordinator:Starting new heartbeat thread
+INFO:kafka.coordinator.consumer:Revoking previously assigned partitions set() for group CalculatorService
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: connecting to nikos-MS-7A34:9092 [('127.0.1.1', 9092) IPv4]
+INFO:kafka.conn:<BrokerConnection node_id=coordinator-0 host=nikos-MS-7A34:9092 <connecting> [IPv4 ('127.0.1.1', 9092)]>: Connection complete.
+INFO:kafka.conn:<BrokerConnection node_id=bootstrap-0 host=localhost:9092 <connected> [IPv4 ('127.0.0.1', 9092)]>: Closing connection. 
+INFO:kafka.coordinator:(Re-)joining group CalculatorService
