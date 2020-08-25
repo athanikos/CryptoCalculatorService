@@ -31,7 +31,7 @@ def test_add_job():
     assert (len(background_scheduler.get_jobs()) == 1)
 
 
-def test_add_job_with_empty_check():
+def test_add_job_with_0000_check():
     background_scheduler, bs, creator = setup_scheduler()
 
     user_not = user_notification()
@@ -40,6 +40,44 @@ def test_add_job_with_empty_check():
     user_not.user_email = "email"
     user_not.notification_type = "BALANCE"
     user_not.check_every = "00:00"
+    user_not.start_date = datetime.now()
+    user_not.end_date = datetime.now()
+    user_not.is_active = False
+    user_not.channel_type = "TELEGRAM"
+    user_not.threshold_value = 1
+    user_not.operation = "ADDED"
+    creator.add_job(background_scheduler=background_scheduler, user_notification=user_not, balance_service=bs)
+    assert (len(background_scheduler.get_jobs()) == 1)
+    assert (apscheduler.triggers.date.DateTrigger == type(background_scheduler.get_jobs()[0].trigger))
+
+def test_add_job_with_empty_check():
+    background_scheduler, bs, creator = setup_scheduler()
+
+    user_not = user_notification()
+    user_not.user_id = 1
+    user_not.user_name = "name"
+    user_not.user_email = "email"
+    user_not.notification_type = "BALANCE"
+    user_not.check_every = ""
+    user_not.start_date = datetime.now()
+    user_not.end_date = datetime.now()
+    user_not.is_active = False
+    user_not.channel_type = "TELEGRAM"
+    user_not.threshold_value = 1
+    user_not.operation = "ADDED"
+    creator.add_job(background_scheduler=background_scheduler, user_notification=user_not, balance_service=bs)
+    assert (len(background_scheduler.get_jobs()) == 1)
+    assert (apscheduler.triggers.date.DateTrigger == type(background_scheduler.get_jobs()[0].trigger))
+
+def test_add_job_with_semicolon_check():
+    background_scheduler, bs, creator = setup_scheduler()
+
+    user_not = user_notification()
+    user_not.user_id = 1
+    user_not.user_name = "name"
+    user_not.user_email = "email"
+    user_not.notification_type = "BALANCE"
+    user_not.check_every = ":"
     user_not.start_date = datetime.now()
     user_not.end_date = datetime.now()
     user_not.is_active = False

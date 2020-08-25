@@ -161,5 +161,5 @@ class Scheduler:
                                               ))
 
     def schedule_user_notifications(self):
-        for notif in self.schedule_user_notifications():
+        for notif in self.schedule_user_notifications():#todo fix
             self.scheduled_job_creator.add_job(background_scheduler=self.bs, user_notification=notif)

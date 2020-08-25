@@ -19,12 +19,12 @@ def if_empty_string_raise(value):
 
 
 def log_error(exception, pk_id, web_method_name, cfg):
-    logging.basicConfig(filename=cfg.LOGS_PATH, level=logging.ERROR)
+    logging.basicConfig(filename=cfg.LOGS_PATH, level=logging.ERROR, format='%(asctime)s %(levelname)-8s %(message)s')
     logging.error(str(pk_id) + ' ' + str(web_method_name) + ' ' + str(exception))
 
 
 def log_error(exception, cfg):
-    logging.basicConfig(filename=cfg.LOGS_PATH, level=logging.ERROR)
+    logging.basicConfig(filename=cfg.LOGS_PATH, level=logging.ERROR, format='%(asctime)s %(levelname)-8s %(message)s')
     logging.error(getattr(exception, 'message', repr(exception)))
 
 

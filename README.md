@@ -30,7 +30,6 @@ this also runs in circle ci on setup (setup_dev_user.py)
 ##### system design 
 
 ###### user notifications 
+Starts Scheduler.synchronize_transactions_and_user_notifications to consume user_notifications from kafka  
+schedule_user_notifications : iterates through user_notifications and adds jobs to scheduler via ScheduledJobCreator.add_job
 
-UsersService produces user notifications to kafka   
-The service starts Scheduler.synchronize_transactions_and_user_notifications to consume user_notifications from kafka which are saved to local mongo store    
-The service also 
