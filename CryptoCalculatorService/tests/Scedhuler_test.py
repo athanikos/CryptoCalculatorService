@@ -19,7 +19,7 @@ from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongo
 
 from cryptodataaccess.helpers import do_connect, log_error
 from CryptoCalculatorService.BalanceService import BalanceService, PROJECT_NAME
-from CryptoCalculatorService.scheduler.Scedhuler import Scedhuler
+from CryptoCalculatorService.scheduler.Scheduler import Scheduler
 from cryptodataaccess.Memory import USER_NOTIFICATIONS_MEMORY_KEY
 
 
@@ -68,7 +68,7 @@ def test_syncronize_transactions():
     ut2.transaction_type = "TRADE"
 
     transactions = [jsonpickle.encode(ut2)]
-    s = Scedhuler(config)
+    s = Scheduler(config)
     s.run_forever = False
     s.delete_and_insert_transactions(transactions)
     uts2 = repo.get_transactions(1)
@@ -90,7 +90,7 @@ def test_syncronize_notifications():
     un.check_times = 3
     un.notification_type = 'BALANCE'
     nots = [jsonpickle.encode(un)]
-    s = Scedhuler(config)
+    s = Scheduler(config)
     s.delete_and_insert_notifications(nots)
     uts2 = users_repo.get_notifications(1)
     assert (len(uts2) == 1)
@@ -132,14 +132,14 @@ def test_produce_to_kafka_inserts_to_mongo():
             topic=users_repo.users_store.configuration.USER_NOTIFICATIONS_TOPIC_NAME
             , data_item=jsonpickle.encode(un))
 
-    s = Scedhuler(config, run_forever=False, consumer_time_out=100)
+    s = Scheduler(config, run_forever=False, consumer_time_out=100)
     s.synchronize_transactions_and_user_notifications()
 
     assert (len(user_notification.objects()) == 1)
 
 
 def test_on_consume_notifications_throws_exception_should_catch_and_log(mock_log):
-    with mock.patch.object(Scedhuler, "consume_notifications"
+    with mock.patch.object(Scheduler, "consume_notifications"
                            ) as _mock:
         _mock.side_effect = raise_Exception
         config, users_repo, trans_repo = setup_repos_and_clear_data()
@@ -166,7 +166,7 @@ def test_on_consume_notifications_throws_exception_should_catch_and_log(mock_log
                 topic=users_repo.users_store.configuration.USER_NOTIFICATIONS_TOPIC_NAME
                 , data_item=jsonpickle.encode(un))
 
-        s = Scedhuler(config, run_forever=False, consumer_time_out=5000)
+        s = Scheduler(config, run_forever=False, consumer_time_out=5000)
         s.synchronize_transactions_and_user_notifications()
         assert _mock.called
 

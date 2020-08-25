@@ -18,6 +18,7 @@ from apscheduler.jobstores.mongodb import MongoDBJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from CryptoCalculatorService.helpers import log_error, log_info
 from CryptoCalculatorService.BalanceService import DEFAULT_CURRENCY, DATE_FORMAT, PROJECT_NAME, BalanceService
+from CryptoCalculatorService.scheduler.ScheduledJobCreator import ScheduledJobCreator
 
 jobstores = {
     'mongo': MongoDBJobStore()
@@ -32,8 +33,14 @@ job_defaults = {
     'max_instances': 1
 }
 
+'''
+Schedules job to Sync transactions and notifications
+Schedules job based on the notifications received 
 
-class Scedhuler():
+'''
+
+
+class Scheduler:
 
     def __init__(self, config, run_forever=True, consumer_time_out=5000):
         self.rates_store = RatesMongoStore(config, log_error)
@@ -49,10 +56,12 @@ class Scedhuler():
         self.run_forever = run_forever
         self.consumer_time_out = consumer_time_out
         self.ran_once = False
+        self.scheduled_job_creator = ScheduledJobCreator()
 
     def start(self):
         self.bs.remove_all_jobs()
-        self.bs.add_job(self.synchronize_transactions_and_user_notifications, 'cron', second='*/59')
+        self.bs.add_job(func=self.synchronize_transactions_and_user_notifications, trigger='cron', second='*/59')
+        self.schedule_user_notifications()
         try:
             self.bs.start()
         except SchedulerAlreadyRunningError:
@@ -92,7 +101,6 @@ class Scedhuler():
             except Exception as e:
                 log_error(e, self.users_store.configuration)
 
-            log_info('sleeping ', self.trans_store.configuration)
             self.ran_once = True
 
     def consume_transactions(self):
@@ -144,10 +152,14 @@ class Scedhuler():
                                                 )
                 self.trans_repo.commit()
 
-    def produce_computed_user_balances(self):
+    def produce_compute_balances(self):
         for key, balances in self.get_all_users_computed_balances():
             produce(self.trans_repo.configuration.KAFKA_BROKERS,
                     self.trans_repo.configuration.BALANCES,
                     BalanceCalculator.compute(user_id=key,
                                               date=datetime.today().strftime(DATE_FORMAT)
                                               ))
+
+    def schedule_user_notifications(self):
+        for notif in self.schedule_user_notifications():
+            self.scheduled_job_creator.add_job(background_scheduler=self.bs, user_notification=notif)

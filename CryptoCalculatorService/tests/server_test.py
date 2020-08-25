@@ -1,6 +1,6 @@
 import pytest
 
-from CryptoCalculatorService.scheduler.Scedhuler import Scedhuler
+from CryptoCalculatorService.scheduler.Scheduler import Scheduler
 from CryptoCalculatorService.tests.helpers import setup_repos_and_clear_data
 from server import configure_app, create_app
 
@@ -19,7 +19,7 @@ def test_client():
 def test_scedhuler_consumes(test_client):
     config, users_repo, trans_repo = setup_repos_and_clear_data()
 
-    s = Scedhuler(config)
+    s = Scheduler(config)
     s.run_forever = False
     s.synchronize_transactions_and_user_notifications()
     assert(1==1)

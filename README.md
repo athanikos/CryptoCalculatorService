@@ -11,7 +11,7 @@ Pushes calculated notifications  to Notification Service
 Uses mongo for storage & kafka for messaging other services
 
 ###### unit testing setup 
-Setup a login and pass for authenticating to mongo db via keyring
+Setup a login and password for authenticating to mongo db via keyring
 this also runs in circle ci on setup (setup_dev_user.py)
 > import keyring    
 > keyring.set_password("CryptoCalculatorService","USERNAME","cryptoAdmin")
@@ -27,4 +27,10 @@ this also runs in circle ci on setup (setup_dev_user.py)
 > sudo service mongod start 
 
 
+##### system design 
 
+###### user notifications 
+
+UsersService produces user notifications to kafka   
+The service starts Scheduler.synchronize_transactions_and_user_notifications to consume user_notifications from kafka which are saved to local mongo store    
+The service also 

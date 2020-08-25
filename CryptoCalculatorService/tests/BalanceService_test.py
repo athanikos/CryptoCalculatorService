@@ -5,7 +5,6 @@ from bson import ObjectId
 from cryptodataaccess.Transactions.TransactionRepository import TransactionRepository
 from cryptodataaccess.Transactions.TransactionMongoStore import TransactionMongoStore
 from cryptodataaccess.Users.UsersMongoStore import UsersMongoStore
-from cryptodataaccess.Users.UsersStore import UsersStore
 from cryptodataaccess.Users.UsersRepository import UsersRepository
 from cryptodataaccess.helpers import do_connect, convert_to_int_timestamp
 from cryptomodel.cryptomodel import exchange_rates, prices
@@ -23,8 +22,6 @@ DATE_FORMAT = '%Y-%m-%d'
 def test_compute_with_non_existing_key():
     config, trans_repo, users_repo = delete_data_and_setup_repositories()
     cs = BalanceService(config)
-
-
     trans_repo.add_transaction(1, 1, 'OXT', 1, 1, "EUR", date(year=2020,month=1, day=1), "kraken",
                                source_id=ObjectId('666f6f2d6261722d71757578'), transaction_type="TRADE", order_type="BUY")
     trans_repo.commit()

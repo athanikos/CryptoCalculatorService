@@ -6,8 +6,8 @@ def if_none_raise_with_id(_id, trans):
         raise ValueError(str(_id) + " does not exist ")
 
 
-def if_none_raise(trans):
-    if trans is None:
+def if_none_raise(obj):
+    if obj is None:
         raise ValueError(" does not exist ")
 
 
@@ -29,5 +29,5 @@ def log_error(exception, cfg):
 
 
 def log_info(message, cfg):
-    logging.basicConfig(filename=cfg.LOGS_PATH, level=logging.INFO)
-    logging.error(message)
+    logging.basicConfig(filename=cfg.LOGS_PATH, level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
+    logging.info(message)

@@ -27,9 +27,10 @@ class BalanceService:
         self.users_repo = UsersRepository(self.users_store)
 
     def compute_balance(self, user_id):
-        now =   datetime.today()
-        return self.compute_balance_with_upperbound_dates(user_id, upper_bound_symbol_rates_date=  convert_to_int_timestamp(now)
-                                                          , upper_bound_transaction_date= now)
+        now = datetime.today()
+        return self.compute_balance_with_upperbound_dates(user_id,
+                                                          upper_bound_symbol_rates_date=convert_to_int_timestamp(now)
+                                                          , upper_bound_transaction_date=now)
 
     def compute_balance_with_upperbound_dates(self, user_id, upper_bound_symbol_rates_date,
                                               upper_bound_transaction_date):

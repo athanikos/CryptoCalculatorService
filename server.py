@@ -7,12 +7,12 @@ import logging
 from CryptoCalculatorService.BalanceService import BalanceService
 from CryptoCalculatorService.PricesService import PricesService
 from CryptoCalculatorService.config import configure_app
-from CryptoCalculatorService.scheduler.Scedhuler import Scedhuler
+from CryptoCalculatorService.scheduler.Scheduler import Scheduler
 
 bp = Blueprint(__name__.split('.')[0], __name__.split('.')[0])
 bs = BalanceService(configure_app())
 ps = PricesService(configure_app())
-scedhuler = Scedhuler(configure_app(), run_forever=True, consumer_time_out=15000)
+scedhuler = Scheduler(configure_app(), run_forever=True, consumer_time_out=15000)
 
 
 def create_app():
