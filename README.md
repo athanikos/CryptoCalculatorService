@@ -27,9 +27,58 @@ this also runs in circle ci on setup (setup_dev_user.py)
 > sudo service mongod start 
 
 
-##### system design 
+##### Design  
+* All services use mongo db as local store.
+* All services message other services via kafka. 
+* An insert on some record will be produced to kafka if another service requires to read that data.
 
-###### user notifications 
-Starts Scheduler.synchronize_transactions_and_user_notifications to consume user_notifications from kafka  
-schedule_user_notifications : iterates through user_notifications and adds jobs to scheduler via ScheduledJobCreator.add_job
+###### CDC
+* Each service gets data through Kafka, APScheduler is used as a background thread to consume from other services.
+* for every entity that needs to be sent to another service, there are two systemic columns:
+    * Operation (ADDED, MODIFIED, REMOVED ) 
+    * source_id keeps the id of the record in a separate column. Used when CDC is applied to link target with source db records.
+    * for example:
+        * A user notification is inserted in UserService local store will have id=A and source_id=A. The record will be produced to kakfa topic.
+        * The Calculator Service will consume the record and insert to its local store a user_notification with id=B and source_id=A.
+        * Upon calculation a computed_notification will be created with id =C and source_id =C. 
+        This record also holds the actual user_notification (with its source_id) stored in UserService so it is possible to link it with the user_notification using the
+    * to find out:
+        * if a user_notification has been calculated:
+            * lookup computed_notification.user_notification.source_id (in calculator.service)
+        * if a computed_notification has been sent:
+            * lookup sent_notification.computed_notification.source_id (in notifications service)
+         
 
+
+
+
+
+
+
+###### Use Case : Balance calculation 
+
+* UserService allows crud operations for user_notifications. The records are saved to UsersService's local mongo store 
+  and also produce kafka records to be consumed by CalculatorService.  
+
+* Consumption by CalculatorService is done via Scheduler.synchronize_transactions_and_user_notifications. 
+  Data is then stored to its local mongo instance (user_notification).
+  The service then calculates balance by fetching all user_notifications that are active and are not computed 
+  and saves back to computed_notification.
+  It also updates user_notification computed column to True.
+      
+* NotificationsService consumes computed_notifications from Kafka similarly to how CalculatorService consumes from UsersService.
+  It keeps state via sent column in computed_notifications (on notifying a user it updates the column).
+  
+
+
+
+###### Deign Considerations 
+
+*   Kafka consume & DB insert are not one atomic operation. A record can be consumed without being inserted in the local store.
+    On DB insert/failed the system pushes the failed inserts to the source topic to trigger reprocessing.
+    
+    This can fail when the service fails in the middle (i.e consume and shut down without inserting to local store )
+  
+
+
+         
