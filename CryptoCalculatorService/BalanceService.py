@@ -35,9 +35,10 @@ class BalanceService:
         self.calculator_repo = CalculatorRepository(self.calculator_store)
 
     def compute_balance_save_and_produce(self, user_id, user_notification):
+        balance = self.compute_balance(user_id)
         cn = self.calculator_repo.add_computed_notification(user_id=user_id,
                                                             start_date=user_notification.start_date,
-                                                            result=self.compute_balance(user_id),
+                                                            result=balance,
                                                             channel_type=user_notification.channel_type,
                                                             check_every=user_notification.check_every,
                                                             end_date=user_notification.end_date,
@@ -52,7 +53,7 @@ class BalanceService:
         self.calculator_repo.commit()
 
         produce(broker_names=self.users_store.configuration.KAFKA_BROKERS,
-                topic=self.users_store.configuration.USER_SETTINGS_TOPIC_NAME
+                topic=self.calculator_store.configuration.COMPUTED_NOTIFICATIONS_TOPIC_NAME
                 , data_item=jsonpickle.encode(cn))
 
     def compute_balance(self, user_id):
@@ -110,7 +111,7 @@ class BalanceService:
                 try:
                     self.delete_and_insert_transactions(transactions)
                 except Exception as e:
-                    (self.produce_transaction(t) for t in transactions)
+                    (self.produce_transaction(t) for t in transactions)  # consumed but failed reproduce
                     log_error(e, self.users_store.configuration)
             except Exception as e:
                 log_error(e, self.users_store.configuration)
@@ -120,7 +121,7 @@ class BalanceService:
                 try:
                     self.delete_and_insert_transactions(notifications)
                 except Exception as e:
-                    (self.produce_user_notification(n) for n in notifications)
+                    (self.produce_user_notification(n) for n in notifications)  # consumed but failed reproduce
                     log_error(e, self.users_store.configuration)
 
                 self.delete_and_insert_notifications(notifications)
@@ -181,7 +182,7 @@ class BalanceService:
     def produce_compute_balances(self):
         for key, balances in self.get_all_users_computed_balances():
             produce(self.trans_repo.configuration.KAFKA_BROKERS,
-                    self.trans_repo.configuration.BALANCES,
+                    self.trans_repo.configuration.COMPUTED_NOTIFICATIONS_TOPIC_NAME,
                     BalanceCalculator.compute(user_id=key,
                                               date=datetime.today().strftime(DATE_FORMAT)
                                               ))
@@ -197,8 +198,6 @@ class BalanceService:
                 , data_item=jsonpickle.encode(transaction))
 
     def schedule_user_notifications(self):
-
-        self.users_repo.get_notifications()
-
-        for notif in self.schedule_user_notifications():  # todo fix
+        # user_notifications = self.calculator_store
+        for notif in self.schedule_user_notifications():  # todo fix get user_notifications and lookup with computed to get those pending
             self.scheduled_job_creator.add_job(background_scheduler=self.bs, user_notification=notif)

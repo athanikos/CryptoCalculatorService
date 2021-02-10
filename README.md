@@ -33,7 +33,7 @@ this also runs in circle ci on setup (setup_dev_user.py)
 * An insert on some record will be produced to kafka if another service requires to read that data.
 
 ###### CDC
-* Each service gets data through Kafka, APScheduler is used as a background thread to consume from other services.
+* Each service gets data through Kafka, APScheduler is used as a background thread to consume data.
 * for every entity that needs to be sent to another service, there are two systemic columns:
     * Operation (ADDED, MODIFIED, REMOVED ) 
     * source_id keeps the id of the record in a separate column. Used when CDC is applied to link target with source db records.
@@ -49,7 +49,12 @@ this also runs in circle ci on setup (setup_dev_user.py)
             * lookup sent_notification.computed_notification.source_id (in notifications service)
          
 
+###### Failing cases 
 
+* Data can be consumed but fail when saving to local store. This has the effect of loosing data (consuming without saving)
+    * On exception when saving to local store data is reproduced.
+
+ 
 
 
 

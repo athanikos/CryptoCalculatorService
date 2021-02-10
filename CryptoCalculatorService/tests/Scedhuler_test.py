@@ -77,7 +77,6 @@ def test_syncronize_transactions():
 
 def test_syncronize_notifications():
     config, users_repo, trans_repo = setup_repos_and_clear_data()
-
     un = user_notification()
     un.source_id = ObjectId('666f6f2d6261722d71757578')
     un.id = ObjectId('666f6f2d6261722d71757578')
@@ -92,10 +91,8 @@ def test_syncronize_notifications():
     nots = [jsonpickle.encode(un)]
     s = Scheduler(config)
     s.delete_and_insert_notifications(nots)
-    uts2 = users_repo.get_notifications(1)
+    uts2 = users_repo.get_notifications()
     assert (len(uts2) == 1)
-
-
 
 
 def test_create_Users_Repo():
