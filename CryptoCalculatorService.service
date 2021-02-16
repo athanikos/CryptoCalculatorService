@@ -1,0 +1,16 @@
+[Unit]
+Description=uWSGI instance to serve CryptoCalculatorService
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/opt/CryptoCalculatorService/CryptoCalculatorService
+Environment="PATH=/opt/CryptoCalculatorService/CryptoCalculatorService/bin"
+ExecStart=/opt/CryptoCalculatorService/CryptoCalculatorServiceEnv/bin/gunicorn  --bind unix:CryptoCalculatorService.sock   "wsgi:app()"
+
+
+
+[Install]
+WantedBy=multi-user.target
+

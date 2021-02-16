@@ -1,0 +1,8 @@
+server {
+    listen 5999;
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/opt/cryptoCalculatorService/CryptoCalculatorService/CryptoCalculatorService.sock;
+    }
+}
+
