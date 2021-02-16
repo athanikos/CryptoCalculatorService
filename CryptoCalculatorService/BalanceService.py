@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from cryptodataaccess.Calculator.CalculatorRepository import CalculatorRepository
 from cryptodataaccess.helpers import convert_to_int_timestamp
 from calculator.BalanceCalculator import BalanceCalculator

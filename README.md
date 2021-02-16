@@ -10,21 +10,23 @@ Receives notifications from users Service (scheduler)
 Pushes calculated notifications  to Notification Service    
 Uses mongo for storage & kafka for messaging other services
 
+##### deployment instructions 
+refer to CryptoUsersService repository 
+
 ###### unit testing setup 
 Setup a login and password for authenticating to mongo db via keyring
 this also runs in circle ci on setup (setup_dev_user.py)
 > import keyring    
-> keyring.set_password("CryptoCalculatorService","USERNAME","cryptoAdmin")
-> keyring.set_password("CryptoCalculatorService","USERNAME","test")
-> keyring.set_password("CryptoCalculatorService","test","test")
-
+> keyring.set_password("CryptoCalculatorService","USERNAME","cryptoAdmin")  
+> keyring.set_password("CryptoCalculatorService","USERNAME","test")  
+> keyring.set_password("CryptoCalculatorService","test","test") 
 
 ###### start kafka     
-> cd <kafkadir>/bin 
-> ./zookeeper-server-start.sh ../config/server.properties 
-> ./kafka-server-start.sh ../config/server.properties 
+> cd <kafkadir>/bin     
+> ./zookeeper-server-start.sh ../config/server.properties   
+> ./kafka-server-start.sh ../config/server.properties   
 ###### start mongo 
-> sudo service mongod start 
+> sudo service mongod start     
 
 
 ##### Design  
@@ -54,12 +56,7 @@ this also runs in circle ci on setup (setup_dev_user.py)
 * Data can be consumed but fail when saving to local store. This has the effect of loosing data (consuming without saving)
     * On exception when saving to local store data is reproduced.
 
- 
-
-
-
-
-
+    
 ###### Use Case : Balance calculation 
 
 * UserService allows crud operations for user_notifications. The records are saved to UsersService's local mongo store 
@@ -74,9 +71,7 @@ this also runs in circle ci on setup (setup_dev_user.py)
 * NotificationsService consumes computed_notifications from Kafka similarly to how CalculatorService consumes from UsersService.
   It keeps state via sent column in computed_notifications (on notifying a user it updates the column).
   
-
-
-
+  
 ###### Deign Considerations 
 
 *   Kafka consume & DB insert are not one atomic operation. A record can be consumed without being inserted in the local store.
