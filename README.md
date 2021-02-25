@@ -42,7 +42,7 @@ this also runs in circle ci on setup (setup_dev_user.py)
     * for example:
         * A user notification is inserted in UserService local store will have id=A and source_id=None.
         * The Calculator Service will consume the record and insert to its local store a user_notification with id=B and source_id=A.
-        * Upon calculation a computed_notification will be messaged via kafka and a record is  created in computed_notification cwntral_store
+        * Upon calculation a computed_notification will be messaged via kafka and a record is  created in computed_notification central_store
         * with id = C and some computed_date   
         
         This record also holds the actual user_notification (with its source_id) stored in UserService so it is possible to link it with the user_notification using the
@@ -51,8 +51,7 @@ this also runs in circle ci on setup (setup_dev_user.py)
             * lookup computed_notification.user_notification.source_id (in calculator.service)
         * if a computed_notification has been sent:
             * lookup sent_notification.computed_notification.source_id (in notifications service)
-         
-         
+                  
 ###### Failing cases 
 
 * Data can be consumed but fail when saving to local store. This has the effect of loosing data (consuming without saving)
