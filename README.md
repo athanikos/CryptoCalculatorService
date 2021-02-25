@@ -40,9 +40,11 @@ this also runs in circle ci on setup (setup_dev_user.py)
     * Operation (ADDED, MODIFIED, REMOVED ) 
     * source_id keeps the id of the record in a separate column. Used when CDC is applied to link target with source db records.
     * for example:
-        * A user notification is inserted in UserService local store will have id=A and source_id=A. The record will be produced to kakfa topic.
+        * A user notification is inserted in UserService local store will have id=A and source_id=None.
         * The Calculator Service will consume the record and insert to its local store a user_notification with id=B and source_id=A.
-        * Upon calculation a computed_notification will be created with id =C and source_id =C. 
+        * Upon calculation a computed_notification will be messaged via kafka and a record is  created in computed_notification cwntral_store
+        * with id = C and some computed_date   
+        
         This record also holds the actual user_notification (with its source_id) stored in UserService so it is possible to link it with the user_notification using the
     * to find out:
         * if a user_notification has been calculated:
@@ -50,13 +52,12 @@ this also runs in circle ci on setup (setup_dev_user.py)
         * if a computed_notification has been sent:
             * lookup sent_notification.computed_notification.source_id (in notifications service)
          
-
+         
 ###### Failing cases 
 
 * Data can be consumed but fail when saving to local store. This has the effect of loosing data (consuming without saving)
     * On exception when saving to local store data is reproduced.
 
-    
 ###### Use Case : Balance calculation 
 
 * UserService allows crud operations for user_notifications. The records are saved to UsersService's local mongo store 
