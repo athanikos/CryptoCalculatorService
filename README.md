@@ -42,13 +42,12 @@ this also runs in circle ci on setup (setup_dev_user.py)
     * for example:
         * A user notification is inserted in UserService local store will have id=A and source_id=None.
         * The Calculator Service will consume the record and insert to its local store a user_notification with id=B and source_id=A.
-        * Upon calculation a computed_notification will be messaged via kafka and a record is  created in computed_notification central_store
-        * with id = C and some computed_date   
+        * Upon calculation a computed_notification will be messaged via kafka and a record is  created in computed_notification centra store with id = C and some computed_date   
         
         This record also holds the actual user_notification (with its source_id) stored in UserService so it is possible to link it with the user_notification using the
     * to find out:
         * if a user_notification has been calculated:
-            * lookup computed_notification.user_notification.source_id (in calculator.service)
+            * xcomputed_notification.user_notification.source_id and computed_notification_date ( the date helps to find out when was the last related computed sent last hour / day etc)
         * if a computed_notification has been sent:
             * lookup sent_notification.computed_notification.source_id (in notifications service)
                   
